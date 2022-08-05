@@ -16,7 +16,6 @@ namespace MCI
                 if (!clients.ContainsKey(i)) 
                     if (PlayerControl.LocalPlayer.OwnerId != i) return i;
             return -1;
-            //return PlayerControl.LocalPlayer.OwnerId;
         }
 
 
@@ -42,6 +41,10 @@ namespace MCI
             AmongUsClient.Instance.HostId = PlayerControl.LocalPlayer.OwnerId;
 
             DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+
+            //hacky "fix" for twix and det
+            DestroyableSingleton<HudManager>.Instance.KillButton.transform.parent.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
+            DestroyableSingleton<HudManager>.Instance.transform.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
 
             PlayerControl.LocalPlayer.myLight = UnityEngine.Object.Instantiate<LightSource>(PlayerControl.LocalPlayer.LightPrefab);
             PlayerControl.LocalPlayer.myLight.transform.SetParent(PlayerControl.LocalPlayer.transform);

@@ -11,14 +11,33 @@ and in game press f9 to move up or f10 to move down through the id list.
 i've left it openended for any future features but i dont think i can see myself regularly maintaning this beyond bug fixes,
 but your welcome to pr and contribute
 
-
+(note this is older footage as i've now got a system in place to remove the extra buttons from tou)
 https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-9936-4e4a2fc8b713.mp4
 
 Relies on Reactor And Bepinex
 
 | Among Us Version | Download |
 |----------|-------------|
+| v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2)
 | v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1)
+
+<details>
+  <summary> Changelog </summary>
+  <details>
+  <summary> v0.0.2 </summary>
+  <ul>
+    <li> Added clamps, and system to remove TOU buttons </li>
+    <li> please save me twix has me locked in basement </li>
+  </ul>
+  </details>
+  <details>
+  <summary> v0.0.1 </summary>
+  <ul>
+    <li> Base systems for creating and switching between Playercontrols </li>
+  </ul>
+  </details>
+</details>
+
 
 #
 <p align="center">This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC.</p>
