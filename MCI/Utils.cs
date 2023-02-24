@@ -35,7 +35,6 @@ namespace MCI
 
             InstanceControl.clients.Add(sampleId, sampleC);
             InstanceControl.PlayerIdClientId.Add(sampleC.Character.PlayerId, sampleId);
-            // AmongUsClient.Instance.allClients.Add(sampleC);
             return sampleC.Character;
         }
 
