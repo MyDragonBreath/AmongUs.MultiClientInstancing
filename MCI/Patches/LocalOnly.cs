@@ -4,13 +4,13 @@ using UnityEngine;
 namespace MCI.Patches
 {
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
-    class LocalOnly
+    public sealed class LocalOnly
     {
-        static void Postfix(PingTracker __instance)
+        public static void Postfix()
         {
-            GameObject.Destroy(GameObject.Find("HowToPlayButton"));
-            GameObject.Destroy(GameObject.Find("PlayOnlineButton"));
-            GameObject.Destroy(GameObject.Find("FreePlayButton"));
+            Object.Destroy(GameObject.Find("HowToPlayButton"));
+            Object.Destroy(GameObject.Find("PlayOnlineButton"));
+            Object.Destroy(GameObject.Find("FreePlayButton"));
             GameObject.Find("PlayLocalButton").transform.localPosition = new Vector3(0, -1f, 0);
 
             var inf = new GameObject("Info");
