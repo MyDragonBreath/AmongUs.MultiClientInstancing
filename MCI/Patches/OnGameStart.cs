@@ -8,7 +8,7 @@ namespace MCI.Patches
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGameHost))]
         [HarmonyPrefix]
 
-        public static void Postfix2(AmongUsClient __instance)
+        public static void Postfix(AmongUsClient __instance)
         {
             foreach (var p in __instance.allClients)
             {
