@@ -3,7 +3,7 @@
 namespace MCI.Patches
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Confirm))]
-    class SameVoteAll
+    public sealed class SameVoteAll
     {
         public static void Postfix(MeetingHud __instance, ref byte suspectStateIdx)
         {

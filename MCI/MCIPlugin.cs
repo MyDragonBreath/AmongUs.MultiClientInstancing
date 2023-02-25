@@ -5,7 +5,6 @@ using Reactor;
 
 namespace MCI
 {
-
     [BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
     [BepInProcess("Among Us.exe")]
     [BepInDependency(ReactorPlugin.Id)]
@@ -16,12 +15,8 @@ namespace MCI
         public Harmony Harmony { get; } = new(Id);
         public override void Load()
         {
-
             Harmony.PatchAll();
             UpdateChecker.checkForUpdate();
-
         }
-
-
     }
 }
