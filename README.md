@@ -34,6 +34,8 @@ Relies on Reactor And Bepinex
     <li> Added update warner </li>
     <li> Big thanks to twix who has released me from the basement in exchange for me finally returning to this mod </li>
   </ul>
+  </details>
+  <details>
   <summary> v0.0.2 </summary>
   <ul>
     <li> Added clamps, and system to remove TOU buttons </li>
