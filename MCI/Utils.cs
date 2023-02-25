@@ -35,6 +35,8 @@ namespace MCI
 
             InstanceControl.clients.Add(sampleId, sampleC);
             InstanceControl.PlayerIdClientId.Add(sampleC.Character.PlayerId, sampleId);
+            sampleC.Character.MyPhysics.ResetAnimState();
+            sampleC.Character.MyPhysics.ResetMoveState();
             return sampleC.Character;
         }
 

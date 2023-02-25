@@ -33,6 +33,9 @@ namespace MCI
             Object.Destroy(PlayerControl.LocalPlayer.lightSource);
 
             var newPlayer = Utils.PlayerById(playerId);
+
+            HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+
             PlayerControl.LocalPlayer = newPlayer;
             PlayerControl.LocalPlayer.moveable = true;
 
@@ -42,6 +45,7 @@ namespace MCI
             HudManager.Instance.SetHudActive(true);
 
             //hacky "fix" for twix and det
+            
             HudManager.Instance.KillButton.transform.parent.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
             HudManager.Instance.transform.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
 
