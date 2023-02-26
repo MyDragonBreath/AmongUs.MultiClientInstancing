@@ -11,44 +11,44 @@ namespace MCI
             {
                 InstanceControl.clients.Clear();
                 InstanceControl.PlayerIdClientId.Clear();
-            } 
+            }
         }
         public static PlayerControl CreatePlayerInstance(string name = "", int id = -1)
         {
-            PlatformSpecificData samplePSD = new PlatformSpecificData();
-            samplePSD.Platform = Platforms.StandaloneItch;
-            samplePSD.PlatformName = "Robot";
+            PlatformSpecificData samplePSD = new()
+            {
+                Platform = Platforms.StandaloneWin10,
+                PlatformName = "Robot"
+            };
 
             int sampleId = id;
-            if (sampleId == -1) sampleId = InstanceControl.availableId();
+            if (sampleId == -1) sampleId = InstanceControl.AvailableId();
 
             var sampleC = new ClientData(sampleId, name + $"-{sampleId}", samplePSD, 5, "", "");
-            PlayerControl playerControl = UnityEngine.Object.Instantiate<PlayerControl>(AmongUsClient.Instance.PlayerPrefab, Vector3.zero, Quaternion.identity);
-            playerControl.PlayerId = (byte)GameData.Instance.GetAvailableId();
-            playerControl.FriendCode = sampleC.FriendCode;
-            playerControl.Puid = sampleC.ProductUserId;
-            sampleC.Character = playerControl;
 
-            if (ShipStatus.Instance) ShipStatus.Instance.SpawnPlayer(playerControl, Palette.PlayerColors.Length, false);
-            AmongUsClient.Instance.Spawn(playerControl, sampleC.Id, SpawnFlags.IsClientCharacter);
-            GameData.Instance.AddPlayer(playerControl);
-            
-            playerControl.SetName(name + $" {{{playerControl.PlayerId}:{sampleId}}}");
-            playerControl.SetSkin(HatManager.Instance.allSkins[UnityEngine.Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
-            playerControl.SetColor(UnityEngine.Random.Range(0, Palette.PlayerColors.Length));
+            AmongUsClient.Instance.CreatePlayer(sampleC);
+            AmongUsClient.Instance.allClients.Add(sampleC);
 
-            //PlayerControl.AllPlayerControls.Add(playerControl);
+            sampleC.Character.SetName(name + $" {{{sampleC.Character.PlayerId}:{sampleId}}}");
+            sampleC.Character.SetSkin(HatManager.Instance.allSkins[Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
+            sampleC.Character.SetColor(Random.Range(0, Palette.PlayerColors.Length));
+
             InstanceControl.clients.Add(sampleId, sampleC);
-            InstanceControl.PlayerIdClientId.Add(playerControl.PlayerId, sampleId);
-            return playerControl;
+            InstanceControl.PlayerIdClientId.Add(sampleC.Character.PlayerId, sampleId);
+            sampleC.Character.MyPhysics.ResetAnimState();
+            sampleC.Character.MyPhysics.ResetMoveState();
+            return sampleC.Character;
         }
 
         public static PlayerControl PlayerById(byte id)
         {
             foreach (var player in PlayerControl.AllPlayerControls)
+            {
                 if (player.PlayerId == id)
                     return player;
+            }
             return null;
         }
     }
 }
+

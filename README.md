@@ -21,11 +21,20 @@ Relies on Reactor And Bepinex
 
 | Among Us Version | Download |
 |----------|-------------|
+| v2022.12.14 | [v0.0.4](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.4)
 | v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2)
 | v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1)
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v0.0.4 </summary>
+  <ul>
+    <li> Updated to latest version, fixed bugs </li>
+    <li> Added update warner </li>
+    <li> Big thanks to twix who has released me from the basement in exchange for me finally returning to this mod </li>
+  </ul>
+  </details>
   <details>
   <summary> v0.0.2 </summary>
   <ul>
