@@ -17,7 +17,7 @@ The mod is not designed to be the end all for testing - so expect some things no
 
 https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-9936-4e4a2fc8b713.mp4
 
-Relies on Reactor And Bepinex
+Relies on Bepinex
 
 | Among Us Version | Download |
 |----------|-------------|
@@ -33,6 +33,7 @@ Relies on Reactor And Bepinex
     <li> Updated to latest version, fixed bugs </li>
     <li> Added update warner </li>
     <li> Big thanks to twix who has released me from the basement in exchange for me finally returning to this mod </li>
+    <li> Removed Reactor, excess uranium will be sold to prolong my time outside of the basement</li>
   </ul>
   </details>
   <details>
