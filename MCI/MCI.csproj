@@ -17,7 +17,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Reactor" Version="2.1.0" />
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.664" />
         <PackageReference Include="AmongUs.GameLibs.$(GamePlatform)" Version="$(GameVersion)" PrivateAssets="all" />
 
