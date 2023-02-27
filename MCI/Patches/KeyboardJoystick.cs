@@ -13,7 +13,7 @@ namespace MCI.Patches
             if (Input.GetKeyDown(KeyCode.F5))
             {
                 controllingFigure = PlayerControl.LocalPlayer.PlayerId;
-                if (PlayerControl.AllPlayerControls.Count == 15 && !Input.GetKeyDown(KeyCode.F6)) return; //hold f6 and press f5 to bypass limit
+                if (PlayerControl.AllPlayerControls.Count == 15 && !Input.GetKeyDown(KeyCode.F6)) return; //press f6 and f5 to bypass limit
                 Utils.CleanUpLoad();
                 Utils.CreatePlayerInstance("Robot");
             }
