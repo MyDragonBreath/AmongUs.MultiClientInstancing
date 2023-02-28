@@ -11,7 +11,7 @@ namespace MCI.Patches
 
         public static void Postfix()
         {
-            if (MCIPlugin.Persistance && InstanceControl.clients.Count != 0)
+            if (MCIPlugin.Persistence && InstanceControl.clients.Count != 0)
             {
                 int count = InstanceControl.clients.Count;
                 InstanceControl.clients.Clear();
