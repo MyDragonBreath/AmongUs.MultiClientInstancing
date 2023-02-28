@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using System;
+using UnityEngine.SceneManagement;
 
 namespace MCI
 {
@@ -15,6 +17,17 @@ namespace MCI
         {
             Harmony.PatchAll();
             UpdateChecker.checkForUpdate();
+
+            SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
+            {
+                if (scene.name == "MainMenu")
+                {
+                    ModManager.Instance.ShowModStamp();
+                }
+            }));
         }
+
+
+        public static bool Persistence = true;
     }
 }

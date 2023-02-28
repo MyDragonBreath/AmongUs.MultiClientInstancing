@@ -1,4 +1,5 @@
 ﻿using InnerNet;
+using System.Linq;
 using UnityEngine;
 
 namespace MCI
@@ -48,6 +49,27 @@ namespace MCI
                     return player;
             }
             return null;
+        }
+
+
+
+
+
+
+
+        public static void RemovePlayer(byte id)
+        {
+            int clientId = InstanceControl.clients.FirstOrDefault(x => x.Value.Character.PlayerId == id).Key;
+            ClientData outputData;
+            InstanceControl.clients.Remove(clientId, out outputData);
+            InstanceControl.PlayerIdClientId.Remove(id);
+            AmongUsClient.Instance.RemovePlayer(clientId, DisconnectReasons.ExitGame);
+            AmongUsClient.Instance.allClients.Remove(outputData);
+        }
+
+        public static void RemoveAllPlayers()
+        {
+            foreach (byte playerId in InstanceControl.PlayerIdClientId.Keys) RemovePlayer(playerId);
         }
     }
 }

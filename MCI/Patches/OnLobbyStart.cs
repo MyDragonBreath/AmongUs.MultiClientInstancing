@@ -4,14 +4,14 @@ namespace MCI.Patches
 {
     [HarmonyPatch]
 
-    public sealed class OnGameEnd
+    public sealed class OnLobbyStart
     {
         [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
         [HarmonyPostfix]
 
         public static void Postfix()
         {
-            if (InstanceControl.clients.Count != 0)
+            if (MCIPlugin.Persistance && InstanceControl.clients.Count != 0)
             {
                 int count = InstanceControl.clients.Count;
                 InstanceControl.clients.Clear();

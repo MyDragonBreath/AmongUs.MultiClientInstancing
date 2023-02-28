@@ -31,6 +31,16 @@ namespace MCI.Patches
                 controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
                 InstanceControl.SwitchTo((byte)controllingFigure);
             }
+
+            if (Input.GetKeyDown(KeyCode.F6))
+            {
+                MCIPlugin.Persistence = !MCIPlugin.Persistence;
+            }
+
+            if (Input.GetKeyDown(KeyCode.F11))
+            {
+                Utils.RemoveAllPlayers();
+            }
         }
     }
 }
