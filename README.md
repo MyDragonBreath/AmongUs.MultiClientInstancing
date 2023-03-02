@@ -6,7 +6,9 @@ It can also be buggy with different mods differently depending on how they inter
 Think of this as more like a ease-of-access utility then a standlone testing environment.
 
 Whilst in lobby press f5 to add players,
+press f6 to toggle between keeping or losing bots between games,
 and in game press f9 to move up or f10 to move down through the id list.
+You can press f11 to remove all bots.
 
 i've left it openended for any future features but i dont think i can see myself regularly maintaning this beyond bug fixes,
 but your welcome to pr and contribute
@@ -21,12 +23,22 @@ Relies on Bepinex
 
 | Among Us Version | Download |
 |----------|-------------|
+| v2023.2.28 | [v0.0.5](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.5)
 | v2022.12.14 | [v0.0.4](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.4)
 | v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2)
 | v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1)
 
 <details>
   <summary> Changelog </summary>
+  <details>
+  <summary> v0.0.5 </summary>
+  <ul>
+    <li> Robot presistence </li>
+    <li> Player removal keybind </li>
+    <li> Countdown timer removed </li>
+    <li> Fix Airship Spawning </li>
+  </ul>
+  </details>
   <details>
   <summary> v0.0.4 </summary>
   <ul>

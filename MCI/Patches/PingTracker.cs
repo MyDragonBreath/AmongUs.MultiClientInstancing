@@ -15,6 +15,8 @@ namespace MCI.Patches
             position.AdjustPosition();
             __instance.text.text +=
                 "\n<color=#ff6700FF>MCI v" + MCIPlugin.VersionString + "</color>";
+            __instance.text.text += (MCIPlugin.Persistence) ?
+                " <color=#00ff00FF>[✓]</color>": " <color=#ff0000FF>[X]</color>";
             if (UpdateChecker.needsUpdate) __instance.text.text += " - <color=#ff0000FF>UPDATE AVAILABLE</color>";
             __instance.text.text +=
                 "\n    by MyDragonBreath, whichTwix";
