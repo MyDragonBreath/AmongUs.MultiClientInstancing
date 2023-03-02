@@ -10,7 +10,7 @@ namespace MCI
     [BepInProcess("Among Us.exe")]
     public partial class MCIPlugin : BasePlugin
     {
-        public const string VersionString = "0.0.4";
+        public const string VersionString = "0.0.5";
         public static System.Version vVersion = new(VersionString);
         public Harmony Harmony { get; } = new(Id);
         public override void Load()
