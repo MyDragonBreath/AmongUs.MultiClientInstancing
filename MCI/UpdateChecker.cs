@@ -10,7 +10,9 @@ namespace MCI
     {
         public static void checkForUpdate()
         {
-            needsUpdate = taskUpdate().GetAwaiter().GetResult();
+            try {
+                needsUpdate = taskUpdate().GetAwaiter().GetResult();
+            } catch (Exception e) {}
         }
 
         public static async Task<bool> taskUpdate()
