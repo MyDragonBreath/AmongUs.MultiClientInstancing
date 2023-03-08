@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System;
 
 namespace MCI
 {
@@ -12,7 +13,7 @@ namespace MCI
         {
             try {
                 needsUpdate = taskUpdate().GetAwaiter().GetResult();
-            } catch () {}
+            } catch (Exception e) {}
         }
 
         public static async Task<bool> taskUpdate()
