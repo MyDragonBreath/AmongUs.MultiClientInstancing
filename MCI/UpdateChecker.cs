@@ -13,7 +13,7 @@ namespace MCI
         {
             try {
                 needsUpdate = taskUpdate().GetAwaiter().GetResult();
-            } catch (Exception e) {}
+            } catch (Exception) {}
         }
 
         public static async Task<bool> taskUpdate()

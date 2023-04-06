@@ -33,6 +33,7 @@ namespace MCI
             sampleC.Character.SetName(name + $" {{{sampleC.Character.PlayerId}:{sampleId}}}");
             sampleC.Character.SetSkin(HatManager.Instance.allSkins[Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
             sampleC.Character.SetColor(Random.Range(0, Palette.PlayerColors.Length));
+            sampleC.Character.SetHat("hat_NoHat", 0);
 
             InstanceControl.clients.Add(sampleId, sampleC);
             InstanceControl.PlayerIdClientId.Add(sampleC.Character.PlayerId, sampleId);
