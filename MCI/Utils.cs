@@ -1,6 +1,8 @@
-﻿using InnerNet;
+﻿using Hazel;
+using InnerNet;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace MCI
 {
@@ -19,7 +21,7 @@ namespace MCI
             PlatformSpecificData samplePSD = new()
             {
                 Platform = Platforms.StandaloneWin10,
-                PlatformName = "Robot"
+                PlatformName = "Bot"
             };
 
             int sampleId = id;
@@ -30,7 +32,9 @@ namespace MCI
             AmongUsClient.Instance.CreatePlayer(sampleC);
             AmongUsClient.Instance.allClients.Add(sampleC);
 
-            sampleC.Character.SetName(name + $" {{{sampleC.Character.PlayerId}:{sampleId}}}");
+
+            sampleC.Character.SetName(name + $" {sampleC.Character.PlayerId}");
+            if (MCIPlugin.IKnowWhatImDoing) sampleC.Character.SetName(name + $" {{{sampleC.Character.PlayerId}:{sampleId}}}");
             sampleC.Character.SetSkin(HatManager.Instance.allSkins[Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
             sampleC.Character.SetColor(Random.Range(0, Palette.PlayerColors.Length));
             sampleC.Character.SetHat("hat_NoHat", 0);
@@ -39,7 +43,24 @@ namespace MCI
             InstanceControl.PlayerIdClientId.Add(sampleC.Character.PlayerId, sampleId);
             sampleC.Character.MyPhysics.ResetAnimState();
             sampleC.Character.MyPhysics.ResetMoveState();
+
+
+            if (SubmergedCompatibility.Loaded)
+            {
+                SubmergedCompatibility.ImpartSub(sampleC.Character);
+            }
+
+
             return sampleC.Character;
+        }
+
+        public static void UpdateNames(string name)
+        {
+            foreach (byte playerId in InstanceControl.PlayerIdClientId.Keys)
+            {
+                PlayerById(playerId).SetName(name + $" {playerId}");
+                if (MCIPlugin.IKnowWhatImDoing) PlayerById(playerId).SetName(name + $" {{{PlayerById(playerId).PlayerId}:{InstanceControl.PlayerIdClientId[playerId]}}}");
+            }
         }
 
         public static PlayerControl PlayerById(byte id)

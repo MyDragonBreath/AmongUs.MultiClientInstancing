@@ -10,12 +10,13 @@ namespace MCI.Patches
 
         public static void Postfix()
         {
+            if (!MCIPlugin.Enabled) return;
             if (Input.GetKeyDown(KeyCode.F5))
             {
                 controllingFigure = PlayerControl.LocalPlayer.PlayerId;
                 if (PlayerControl.AllPlayerControls.Count == 15 && !Input.GetKeyDown(KeyCode.F6)) return; //press f6 and f5 to bypass limit
                 Utils.CleanUpLoad();
-                Utils.CreatePlayerInstance("Robot");
+                Utils.CreatePlayerInstance("Bot");
             }
 
             if (Input.GetKeyDown(KeyCode.F9))
@@ -32,7 +33,12 @@ namespace MCI.Patches
                 InstanceControl.SwitchTo((byte)controllingFigure);
             }
 
-            if (Input.GetKeyDown(KeyCode.F6))
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F6))
+            {
+                MCIPlugin.IKnowWhatImDoing = !MCIPlugin.IKnowWhatImDoing;
+                Utils.UpdateNames("Bot");
+            }
+            else if (Input.GetKeyDown(KeyCode.F6))
             {
                 MCIPlugin.Persistence = !MCIPlugin.Persistence;
             }
@@ -41,6 +47,8 @@ namespace MCI.Patches
             {
                 Utils.RemoveAllPlayers();
             }
+
+            
         }
     }
 }

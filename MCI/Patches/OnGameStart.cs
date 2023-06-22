@@ -10,6 +10,7 @@ namespace MCI.Patches
 
         public static void Postfix(AmongUsClient __instance)
         {
+            if (!MCIPlugin.Enabled) return;
             foreach (var p in __instance.allClients)
             {
                 p.IsReady = true;

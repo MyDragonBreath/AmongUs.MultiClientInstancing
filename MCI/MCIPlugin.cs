@@ -10,13 +10,23 @@ namespace MCI
     [BepInProcess("Among Us.exe")]
     public partial class MCIPlugin : BasePlugin
     {
-        public const string VersionString = "0.0.5";
+        public const string VersionString = "0.0.6";
         public static System.Version vVersion = new(VersionString);
         public Harmony Harmony { get; } = new(Id);
+
+        public static MCIPlugin singleton { get; private set; } = null;
+
+        public static bool Enabled { get; set; } = true;
+        public static bool IKnowWhatImDoing { get; set; } = false;
         public override void Load()
         {
+            if (singleton != null) return;
+            singleton = this;
+            
             Harmony.PatchAll();
             UpdateChecker.checkForUpdate();
+
+            SubmergedCompatibility.Initialize();
 
             SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
             {

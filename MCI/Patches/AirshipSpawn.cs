@@ -12,6 +12,7 @@ namespace MCI.Patches
 
         public static void Postfix(SpawnInMinigame __instance)
         {
+            if (!MCIPlugin.Enabled) return;
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (!player.Data.PlayerName.Contains("Robot")) continue;
