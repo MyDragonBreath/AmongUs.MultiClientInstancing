@@ -11,6 +11,7 @@ namespace MCI.Patches
 
         public static void Postfix()
         {
+            if (!MCIPlugin.Enabled) return;
             if (MCIPlugin.Persistence && InstanceControl.clients.Count != 0)
             {
                 int count = InstanceControl.clients.Count;
@@ -18,7 +19,7 @@ namespace MCI.Patches
                 InstanceControl.PlayerIdClientId.Clear();
                 for (int i = 0; i < count; i++)
                 {
-                    Utils.CreatePlayerInstance("Robot");
+                    Utils.CreatePlayerInstance("Bot");
                 }
             }
         }

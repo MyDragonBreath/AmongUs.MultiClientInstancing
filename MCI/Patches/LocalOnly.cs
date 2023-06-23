@@ -8,11 +8,6 @@ namespace MCI.Patches
     {
         public static void Postfix()
         {
-            Object.Destroy(GameObject.Find("HowToPlayButton"));
-            Object.Destroy(GameObject.Find("PlayOnlineButton"));
-            Object.Destroy(GameObject.Find("FreePlayButton"));
-            GameObject.Find("PlayLocalButton").transform.localPosition = new Vector3(0, -1f, 0);
-
             var inf = new GameObject("Info");
             inf.transform.position = new Vector3(0, -1.75f, 0);
             var tmp = inf.AddComponent<TMPro.TextMeshPro>();
@@ -20,7 +15,21 @@ namespace MCI.Patches
             tmp.horizontalAlignment = TMPro.HorizontalAlignmentOptions.Center;
             tmp.text = "MCI only supports localhosted lobbies.";
             tmp.color = Color.red;
-            tmp.fontSize = 3.25f;
+            tmp.fontSize = 2.25f;
+
+            var pos = inf.AddComponent<AspectPosition>();
+            pos.Alignment = AspectPosition.EdgeAlignments.RightBottom;
+            pos.DistanceFromEdge = new Vector3(3.2f, 1, 200);
+            pos.AdjustPosition();
+        }
+    }
+
+    [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
+    public sealed class LobbyCheck
+    {
+        public static void Postfix()
+        {
+            MCIPlugin.Enabled = AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
         }
     }
 }

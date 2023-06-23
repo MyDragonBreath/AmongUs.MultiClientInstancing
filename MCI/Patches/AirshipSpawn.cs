@@ -1,5 +1,5 @@
 using HarmonyLib;
-using System;
+using UnityEngine;
 
 namespace MCI.Patches
 {
@@ -12,10 +12,12 @@ namespace MCI.Patches
 
         public static void Postfix(SpawnInMinigame __instance)
         {
+            if (!MCIPlugin.Enabled) return;
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (!player.Data.PlayerName.Contains("Robot")) continue;
-                var rand = new Random().Next(0, __instance.Locations.Count);
+                if (!player.Data.PlayerName.Contains(MCIPlugin.RobotName)) continue;
+                var rand = Random.Range(0, __instance.Locations.Count);
+
                 player.gameObject.SetActive(true);
                 player.NetTransform.RpcSnapTo(__instance.Locations[rand].Location);
             }
