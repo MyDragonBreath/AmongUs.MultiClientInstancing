@@ -5,23 +5,24 @@ It is in no way a replacement for testing your mod and has a complete disregard 
 It can also be buggy with different mods differently depending on how they interact with amongus - so chances are its not going to be perfect.
 Think of this as more like a ease-of-access utility then a standlone testing environment.
 
-Whilst in lobby press f5 to add players,
-press f6 to toggle between keeping or losing bots between games,
-and in game press f9 to move up or f10 to move down through the id list.
-You can press f11 to remove all bots.
+## Important
+Please pr and contribute where you feel is necessary.
+The mod is not designed to be the end all for testing - so expect some things, mostly rpc's, not to work - please read the source to understand how this works.
+Relies on Bepinex
 
-You can press shift + f6 to switch between IKnowWhatI'm Doing Mode.
+## Controls 
 
-i've left it openended for any future features but i dont think i can see myself regularly maintaning this beyond bug fixes,
-but your welcome to pr and contribute
+Whilst in lobby press `F5` to add players,
+press `F6` to toggle between keeping or losing bots between games,
+and in game press `F9` to move up or `F10` to move down through the id list.
+You can press `F11` to remove all bots.
+You can press `Shift` + `F6` to switch between IKnowWhatI'm Doing Mode.
 
-The mod is not designed to be the end all for testing - so expect some things not to work - please read the source to understand how this works.
-
-(note this is older footage as i've now got a system in place to remove the extra buttons from tou)
-
+(note this is older footage as i've now got a system in place to remove the extra buttons from tou, and names are simplified)
 https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-9936-4e4a2fc8b713.mp4
 
-Relies on Bepinex
+
+## Releases
 
 | Among Us Version | Download |
 |----------|-------------|
@@ -30,6 +31,8 @@ Relies on Bepinex
 | v2022.12.14 | [v0.0.4](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.4)
 | v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2)
 | v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1)
+
+## Changelog
 
 <details>
   <summary> Changelog </summary>
