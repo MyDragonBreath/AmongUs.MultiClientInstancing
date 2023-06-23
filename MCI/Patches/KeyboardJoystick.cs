@@ -16,7 +16,7 @@ namespace MCI.Patches
                 controllingFigure = PlayerControl.LocalPlayer.PlayerId;
                 if (PlayerControl.AllPlayerControls.Count == 15 && !Input.GetKeyDown(KeyCode.F6)) return; //press f6 and f5 to bypass limit
                 Utils.CleanUpLoad();
-                Utils.CreatePlayerInstance("Bot");
+                Utils.CreatePlayerInstance(MCIPlugin.RobotName);
             }
 
             if (Input.GetKeyDown(KeyCode.F9))
@@ -36,7 +36,7 @@ namespace MCI.Patches
             if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F6))
             {
                 MCIPlugin.IKnowWhatImDoing = !MCIPlugin.IKnowWhatImDoing;
-                Utils.UpdateNames("Bot");
+                Utils.UpdateNames(MCIPlugin.RobotName);
             }
             else if (Input.GetKeyDown(KeyCode.F6))
             {

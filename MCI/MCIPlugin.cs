@@ -17,6 +17,8 @@ namespace MCI
 
         public static MCIPlugin singleton { get; private set; } = null;
 
+        public static string RobotName { get; set; } = "Bot";
+
         public static bool Enabled { get; set; } = true;
         public static bool IKnowWhatImDoing { get; set; } = false;
         public override void Load()
