@@ -8,17 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-///
-///
+/// <summary>
+/// ///
 /// https://www.youtube.com/watch?v=-1qju6V1jLM
 /// - MDB
 ///
-
+/// </summary>
 namespace MCI
 {
     public class SubmergedCompatibility
     {
-
         public const string SUBMERGED_GUID = "Submerged";
         public const ShipStatus.MapType SUBMERGED_MAP_TYPE = (ShipStatus.MapType)5;
 
@@ -30,11 +29,11 @@ namespace MCI
         public static Type[] Types { get; private set; }
         public static Dictionary<string, Type> InjectedTypes { get; private set; }
 
-        public static Type CustomPlayerData;
-        public static FieldInfo hasMap;
+        private static Type CustomPlayerData;
+        private static FieldInfo hasMap;
 
-        public static Type SpawnInState;
-        public static FieldInfo currentState;
+        private static Type SpawnInState;
+        private static FieldInfo currentState;
 
         public static void Initialize()
         {
@@ -46,9 +45,8 @@ namespace MCI
 
             Assembly = Plugin!.GetType().Assembly;
             Types = AccessTools.GetTypesFromAssembly(Assembly);
-            InjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(Types.FirstOrDefault(t => t.Name == "ComponentExtensions"), "RegisteredTypes")
+            InjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(Array.Find(Types, t => t.Name == "ComponentExtensions"), "RegisteredTypes")
                 .Invoke(null, Array.Empty<object>());
-
 
             CustomPlayerData = InjectedTypes.Where(t => t.Key == "CustomPlayerData").Select(x => x.Value).First();
             hasMap = AccessTools.Field(CustomPlayerData, "hasMap");
@@ -59,7 +57,7 @@ namespace MCI
             var GetReadyPlayerAmount = AccessTools.Method(subSpawnSystem, "GetReadyPlayerAmount");
             currentState = AccessTools.Field(subSpawnSystem, "currentState");
 
-            MCIPlugin.singleton.Harmony.Patch(GetReadyPlayerAmount, new HarmonyMethod(AccessTools.Method(typeof(SubmergedCompatibility), nameof(ReadyPlayerAmount))));
+            MCIPlugin.Singleton.Harmony.Patch(GetReadyPlayerAmount, new HarmonyMethod(AccessTools.Method(typeof(SubmergedCompatibility), nameof(ReadyPlayerAmount))));
         }
 
         public static bool ReadyPlayerAmount(dynamic __instance, ref int __result)
@@ -70,7 +68,7 @@ namespace MCI
                 __result = __instance.GetTotalPlayerAmount();
                 Enum.TryParse(SpawnInState, "Done", true, out object e);
                 currentState.SetValue(__instance, e);
-                return false; 
+                return false;
             }
             return true;
         }

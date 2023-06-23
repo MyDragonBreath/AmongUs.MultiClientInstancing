@@ -12,10 +12,10 @@ namespace MCI
     public partial class MCIPlugin : BasePlugin
     {
         public const string VersionString = "0.0.6";
-        public static System.Version vVersion = new(VersionString);
+        internal static Version vVersion = new(VersionString);
         public Harmony Harmony { get; } = new(Id);
 
-        public static MCIPlugin singleton { get; private set; } = null;
+        public static MCIPlugin Singleton { get; private set; } = null;
 
         public static string RobotName { get; set; } = "Bot";
 
@@ -23,11 +23,11 @@ namespace MCI
         public static bool IKnowWhatImDoing { get; set; } = false;
         public override void Load()
         {
-            if (singleton != null) return;
-            singleton = this;
-            
+            if (Singleton != null) return;
+            Singleton = this;
+
             Harmony.PatchAll();
-            UpdateChecker.checkForUpdate();
+            UpdateChecker.CheckForUpdate();
 
             SubmergedCompatibility.Initialize();
 
@@ -40,11 +40,8 @@ namespace MCI
             }));
         }
 
-
-        public static bool Persistence = true;
-        
+        internal static bool Persistence = true;
     }
-
 
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class CountdownPatch
