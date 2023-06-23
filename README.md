@@ -1,24 +1,26 @@
 # AmongUs.MultiClientInstancing
 
-I think the best way to describe this is as a method of host testing what your "mod" could look like with multiple clients.
-It is in no way a replacement for testing your mod and has a complete disregard for rpc calls.
-It can also be buggy with different mods differently depending on how they interact with amongus - so chances are its not going to be perfect.
+I think the best way to describe this is as a method of host testing what your "mod" could look like with multiple clients.<br>
+It is in no way a replacement for testing your mod and has a complete disregard for rpc calls.<br>
+It can also be buggy with different mods differently depending on how they interact with amongus - so chances are its not going to be perfect.<br>
 Think of this as more like a ease-of-access utility then a standlone testing environment.
 
 ## Important
-Please pr and contribute where you feel is necessary.
-The mod is not designed to be the end all for testing - so expect some things, mostly rpc's, not to work - please read the source to understand how this works.
+Please pr and contribute where you feel is necessary.<br>
+The mod is not designed to be the end all for testing - so expect some things, mostly rpc's, not to work - please read the source to understand how this works.<br>
 Relies on Bepinex
 
 ## Controls 
 
-Whilst in lobby press `F5` to add players,
-press `F6` to toggle between keeping or losing bots between games,
-and in game press `F9` to move up or `F10` to move down through the id list.
-You can press `F11` to remove all bots.
+Whilst in lobby press `F5` to add players,<br>
+press `F6` to toggle between keeping or losing bots between games,<br>
+and in game press `F9` to move up or `F10` to move down through the id list.<br>
+You can press `F11` to remove all bots.<br>
 You can press `Shift` + `F6` to switch between IKnowWhatI'm Doing Mode.
 
 (note this is older footage as i've now got a system in place to remove the extra buttons from tou, and names are simplified)
+
+
 https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-9936-4e4a2fc8b713.mp4
 
 
