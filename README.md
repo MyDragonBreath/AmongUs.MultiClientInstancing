@@ -43,7 +43,7 @@ https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-
   <ul>
     <li> Updated to latest version </li>
     <li> Submerged compatibility </li>
-    <li> Client Simplfications </li>
+    <li> Client Simplifications </li>
     <li> IKnowWhatI'm Doing Mode (with shift+f6) </li>
     <li> Mod auto disables in case you accidently join an online game </li>
     <li> Fix null hat </li>
