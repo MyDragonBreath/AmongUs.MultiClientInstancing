@@ -40,7 +40,7 @@ Relies on Bepinex
     <li> Submerged compatibility </li>
     <li> Client Simplfications </li>
     <li> IKnowWhatI'm Doing Mode (with shift+f6) </li>
-    <li> Mod auto disables in cause you accidently join an online game </li>
+    <li> Mod auto disables in case you accidently join an online game </li>
     <li> Fix null hat </li>
     <li> Fix update checker without internet </li>
     <li> Fix removing all players causing you to lose your body </li>
