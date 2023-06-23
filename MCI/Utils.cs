@@ -32,7 +32,6 @@ namespace MCI
             AmongUsClient.Instance.CreatePlayer(sampleC);
             AmongUsClient.Instance.allClients.Add(sampleC);
 
-
             sampleC.Character.SetName(name + $" {sampleC.Character.PlayerId}");
             if (MCIPlugin.IKnowWhatImDoing) sampleC.Character.SetName(name + $" {{{sampleC.Character.PlayerId}:{sampleId}}}");
             sampleC.Character.SetSkin(HatManager.Instance.allSkins[Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
@@ -44,12 +43,10 @@ namespace MCI
             sampleC.Character.MyPhysics.ResetAnimState();
             sampleC.Character.MyPhysics.ResetMoveState();
 
-
             if (SubmergedCompatibility.Loaded)
             {
                 SubmergedCompatibility.ImpartSub(sampleC.Character);
             }
-
 
             return sampleC.Character;
         }

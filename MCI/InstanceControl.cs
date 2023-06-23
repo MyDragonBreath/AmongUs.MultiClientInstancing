@@ -7,9 +7,9 @@ namespace MCI
 {
     public static class InstanceControl
     {
-        public static Dictionary<int, ClientData> clients = new();
+        internal static Dictionary<int, ClientData> clients = new();
 
-        public static Dictionary<byte, int> PlayerIdClientId = new();
+        internal static Dictionary<byte, int> PlayerIdClientId = new();
 
         public const int MaxID = 100;
 

@@ -27,7 +27,7 @@ namespace MCI.Patches
     [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
     public sealed class LobbyCheck
     {
-        public static void Postfix(LobbyBehaviour __instance)
+        public static void Postfix()
         {
             MCIPlugin.Enabled = AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
         }

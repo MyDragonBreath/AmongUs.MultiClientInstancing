@@ -47,8 +47,6 @@ namespace MCI.Patches
             {
                 Utils.RemoveAllPlayers();
             }
-
-            
         }
     }
 }
