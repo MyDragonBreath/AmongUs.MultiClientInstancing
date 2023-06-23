@@ -19,7 +19,7 @@ namespace MCI.Patches
 
             var pos = inf.AddComponent<AspectPosition>();
             pos.Alignment = AspectPosition.EdgeAlignments.RightBottom;
-            pos.DistanceFromEdge = new Vector3(3, 1, 200);
+            pos.DistanceFromEdge = new Vector3(3.2f, 1, 200);
             pos.AdjustPosition();
         }
     }
