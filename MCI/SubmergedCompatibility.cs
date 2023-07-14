@@ -49,7 +49,7 @@ namespace MCI
                 .Invoke(null, Array.Empty<object>());
 
             CustomPlayerData = InjectedTypes.Where(t => t.Key == "CustomPlayerData").Select(x => x.Value).First();
-            hasMap = AccessTools.Field(CustomPlayerData, "hasMap");
+            hasMap = AccessTools.Field(CustomPlayerData, "_hasMap");
 
             SpawnInState = Types.First(t => t.Name == "SpawnInState");
 
