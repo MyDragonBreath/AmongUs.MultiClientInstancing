@@ -15,10 +15,10 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (PlayerControl.localpler && !NoLobby && !CustomPlayer.LocalCustom.IsDead && !IsEnded && !GameHasEnded)
-                    PlayerControl.localpler.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
+                if (PlayerControl.localplayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.localplayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended);
+                    PlayerControl.localplayer.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
 
-                if (IsLobby)
+                if (DestroyableSingleton<LobbyBehavior>.Instance)
                 {
                     GUILayout.Label("You are sus.")
                 
@@ -43,7 +43,7 @@ namespace MCI
                         InstanceControl.RemoveAllPlayers();
                     }
                 }
-                else if (IsGame)
+                else if (GameManager.Instance.GameHasStarted)
                 {
 
                     if (GUILayout.Button("Next Player"))
@@ -91,10 +91,10 @@ namespace MCI
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
-                        PlayerControl.localpler.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
+                        PlayerControl.localplayer.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
 
                     if (GUILayout.Button("Complete Everyone's Tasks"))
-                        PlayerControl.AllPlayers.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
+                        PlayerControl.AllPlayersControls.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
@@ -102,14 +102,14 @@ namespace MCI
                         HudManager.Instance.StartCoroutine(HudManager.Instance.CoShowIntro());
                     }
 
-                    if (GUILayout.Button("Start Meeting") && MeetingHud.Instance)
+                    if (GUILayout.Button("Start Meeting") && !MeetingHud.Instance)
                     {
-                        PlayerControl.localpler.RemainingEmergencies++;
-                        PlayerControl.localpler.CmdReportDeadBody(null);
+                        PlayerControl.localplayer.RemainingEmergencies++;
+                        PlayerControl.localplayer.CmdReportDeadBody(null);
                     }
 
-                    if (GUILayout.Button("End Meeting") && MeetingHud.Instance)
-                        Meeting.RpcClose();
+                    if (GUILayout.Button("End Meeting") && !MeetingHud.Instance)
+                        MeetingHud.Instance.Rpcclose();
 
                     if (GUILayout.Button("Kill Self"))
                         player.RpcMurderPlayer(player);
@@ -121,12 +121,12 @@ namespace MCI
                         }
 
                     if (GUILayout.Button("Revive Self"))
-                        PlayerControl.localpler.Revive();
+                        PlayerControl.localplayer.Revive();
 
                     if (GUILayout.Button("Revive All"))
-                        PlayerControl.AllPlayers.ForEach(x => x.Revive());
+                        PlayerControl.AllPlayersControls.ForEach(x => x.Revive());
 
-                if (PlayerControl.localpler)
+                if (PlayerControl.localplayer)
                 {
                     var position = CustomPlayer.LocalCustom.Position;
                     GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
@@ -150,11 +150,10 @@ namespace MCI
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 TestWindow.Enabled = !TestWindow.Enabled;
-                SettingsPatches.PresetButton.LoadPreset("Last Used", true);
 
                 if (!TestWindow.Enabled)
                 {
-                    MCIUtils.RemoveAllPlayers();
+                    InstanceControl.RemoveAllPlayers();
                 }
             }
 
