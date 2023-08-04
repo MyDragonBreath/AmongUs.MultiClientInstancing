@@ -3,7 +3,7 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using System;
 using UnityEngine.SceneManagement;
-using Reactor
+using Reactor;
 using Il2CppInterop.Runtime.Injection;
 
 namespace MCI
