@@ -135,9 +135,9 @@ namespace MCI
             }
         }
 
-        public void Update()
+        void Update()
         {
-            if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null)) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
+            if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
             {
                 if (TestWindow.Enabled)
                     TestWindow.Enabled = false;
