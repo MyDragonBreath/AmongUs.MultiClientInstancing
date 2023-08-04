@@ -15,8 +15,8 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (CustomPlayer.Local && !NoLobby && !CustomPlayer.LocalCustom.IsDead && !IsEnded && !GameHasEnded)
-                    CustomPlayer.Local.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
+                if (PlayerControl.localpler && !NoLobby && !CustomPlayer.LocalCustom.IsDead && !IsEnded && !GameHasEnded)
+                    PlayerControl.localpler.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
 
                 if (IsLobby)
                 {
@@ -33,14 +33,14 @@ namespace MCI
 
                     if (GUILayout.Button("Remove Last Bot"))
                     {
-                        MCIUtils.RemovePlayer((byte)MCIUtils.Clients.Count);
+                        InstanceControl.RemovePlayer((byte)MCIUtils.Clients.Count);
 
-                        if (MCIUtils.Clients.Count == 0)
+                        if (InstanceControl.Clients.Count == 0)
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
                     {
-                        MCIUtils.RemoveAllPlayers();
+                        InstanceControl.RemoveAllPlayers();
                     }
                 }
                 else if (IsGame)
@@ -88,14 +88,13 @@ namespace MCI
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 0);
-                        DefaultOutfitAll();
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
-                        CustomPlayer.Local.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
+                        PlayerControl.localpler.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
 
                     if (GUILayout.Button("Complete Everyone's Tasks"))
-                        CustomPlayer.AllPlayers.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
+                        PlayerControl.AllPlayers.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
@@ -103,17 +102,17 @@ namespace MCI
                         HudManager.Instance.StartCoroutine(HudManager.Instance.CoShowIntro());
                     }
 
-                    if (GUILayout.Button("Start Meeting") && !Meeting)
+                    if (GUILayout.Button("Start Meeting") && MeetingHud.Instance)
                     {
-                        CustomPlayer.Local.RemainingEmergencies++;
-                        CustomPlayer.Local.CmdReportDeadBody(null);
+                        PlayerControl.localpler.RemainingEmergencies++;
+                        PlayerControl.localpler.CmdReportDeadBody(null);
                     }
 
-                    if (GUILayout.Button("End Meeting") && Meeting)
+                    if (GUILayout.Button("End Meeting") && MeetingHud.Instance)
                         Meeting.RpcClose();
 
                     if (GUILayout.Button("Kill Self"))
-                        RpcMurderPlayer(CustomPlayer.Local, CustomPlayer.Local);
+                        player.RpcMurderPlayer(player);
 
                     if (GUILayout.Button("Kill All"))
                         foreach (var player in PlayerControl.AllPlayerControls)
@@ -122,10 +121,10 @@ namespace MCI
                         }
 
                     if (GUILayout.Button("Revive Self"))
-                        CustomPlayer.Local.Revive();
+                        PlayerControl.localpler.Revive();
 
                     if (GUILayout.Button("Revive All"))
-                        CustomPlayer.AllPlayers.ForEach(x => x.Revive());
+                        PlayerControl.AllPlayers.ForEach(x => x.Revive());
 
                 if (CustomPlayer.Local)
                 {
