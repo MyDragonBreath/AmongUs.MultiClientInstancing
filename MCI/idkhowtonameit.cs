@@ -142,7 +142,9 @@ namespace Debugger
                     GUILayout.Label($"Mouse Position\nx: {mouse.x:00.00} y: {mouse.y:00.00} z: {mouse.z:00.00}");
                 }
             }
-            
+        }
+        public void Update()
+        {
             if (NoPlayers || !IsLocalGame)
             {
                 if (TestWindow.Enabled)
@@ -165,5 +167,7 @@ namespace Debugger
             if (Input.GetKeyDown(KeyCode.F2))
                 TestWindow.Enabled = !TestWindow.Enabled;
         }
+
+        public void OnGUI() => TestWindow.OnGUI();
     }
 }
