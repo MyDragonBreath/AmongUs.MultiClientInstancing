@@ -71,7 +71,7 @@ namespace MCI
 
                     if (GUILayout.Button("End Game"))
                     {
-                        RpcEndGame;
+                        GameManager.Instance.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
                     }
 
                     if (GUILayout.Button("Fix All Sabotages"))
@@ -126,7 +126,7 @@ namespace MCI
                     if (GUILayout.Button("Revive All"))
                         PlayerControl.AllPlayers.ForEach(x => x.Revive());
 
-                if (CustomPlayer.Local)
+                if (PlayerControl.localpler)
                 {
                     var position = CustomPlayer.LocalCustom.Position;
                     GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
