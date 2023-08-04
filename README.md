@@ -6,31 +6,23 @@ Note: I am not a creator of MCI or something else. I just maid an "addon" for th
 
 ##Functions
 
-|Everywhere|In lobby|
-|----------|----------|
-|-Display player name and location|-Spawn a bot|
-|-Display mouse location|-Remove last bot that joined|
-|-Enable player collider|-Remove all bots|
-
-In lobby:
--Spawn a bot
--Remove last bot that joined
--Remove all bots
-
-In game:
--Control the next player
--Control the previous player
--End the game
--Fix all sabotages
--Complete self tasks
--Complete everyone's tasks
--Redo the Intro Sequence
--Start a meeting
--End a meeting
--Kill yourself
--Kill everyone
--Revive yourself
--Revive everyone
+|Everywhere|In lobby|In game|
+|----------|----------|----------|
+|-Display player name and location|-Spawn a bot|-Control the next player|
+|-Display mouse location|-Remove last bot that joined|-Control the previous player|
+|-Enable player collider|-Remove all bots|-End the game|
+|----------|----------|-Control the previous player|
+|----------|----------|-End the game|
+|----------|----------|-Fix all sabotages|
+|----------|----------|-Complete self tasks|
+|----------|----------|-Complete everyone's tasks|
+|----------|----------|-Redo the Intro Sequence|
+|----------|----------|-Start a meeting|
+|----------|----------|-End a meeting|
+|----------|----------|-Kill yourself|
+|----------|----------|-Kill everyone|
+|----------|----------|-Revive yourself|
+|----------|----------|-Revive everyone|
 
 ##Installation
 
