@@ -20,7 +20,7 @@ namespace MCI
 
                 if (DestroyableSingleton<LobbyBehavior>.Instance)
                 {
-                    GUILayout.Label("You are sus.")
+                    GUILayout.Label("You are sus.");
                 
                     if (GUILayout.Button("Spawn Bot"))
                     {
