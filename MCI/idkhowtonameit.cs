@@ -1,6 +1,6 @@
 using Reactor.Utilities.ImGui;
 
-namespace Debugger
+namespace MCI
 {
     //Based off of Reactor.Debugger but merged with MCI and added some functions of my own for testing
     public class DebuggerBehaviour : MonoBehaviour
