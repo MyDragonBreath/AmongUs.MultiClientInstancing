@@ -1,7 +1,8 @@
-sing Reactor.Utilities.ImGui;
+using Reactor.Utilities.ImGui;
 
+namespace MCI
 {
-    //Based off of Reactor.Debugger but merged with MCI and added some functions of my own for testing and changed by le killer :heh:
+    //le killer is gonna kill you fr
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
@@ -10,7 +11,7 @@ sing Reactor.Utilities.ImGui;
 
         public DebuggerBehaviour(IntPtr ptr) : base(ptr)
         {
-            TestWindow = new(new(20, 20, 0, 0), "BetterMci", () =>
+            TestWindow = new(new(20, 20, 0, 0), "Better Mci", () =>
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
@@ -19,17 +20,14 @@ sing Reactor.Utilities.ImGui;
 
                 if (IsLobby)
                 {
-                    TownOfUsReworked.IsTest = GUILayout.Toggle(TownOfUsReworked.IsTest, "Toggle Test Mode");
-                    TownOfUsReworked.LobbyCapped = GUILayout.Toggle(TownOfUsReworked.LobbyCapped, "Toggle Lobby Cap");
-                    TownOfUsReworked.Persistence = GUILayout.Toggle(TownOfUsReworked.Persistence, "Toggle Bot Persistence");
+                    GUILayout.Label("You are sus.")
 
                     if (GUILayout.Button("Spawn Bot"))
                     {
-                        if ((CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize && TownOfUsReworked.LobbyCapped) || !TownOfUsReworked.LobbyCapped)
+                        if ((CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize)
                         {
                             MCIUtils.CleanUpLoad();
                             MCIUtils.CreatePlayerInstance();
-                            TownOfUsReworked.MCIActive = true;
                         }
                     }
 
@@ -38,18 +36,25 @@ sing Reactor.Utilities.ImGui;
                         MCIUtils.RemovePlayer((byte)MCIUtils.Clients.Count);
 
                         if (MCIUtils.Clients.Count == 0)
-                            TownOfUsReworked.MCIActive = false;
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
                     {
                         MCIUtils.RemoveAllPlayers();
-                        TownOfUsReworked.MCIActive = false;
                     }
                 }
-                else if (TownOfUsReworked.MCIActive)
+                else if (IsGame)
                 {
-                    TownOfUsReworked.SameVote = GUILayout.Toggle(TownOfUsReworked.SameVote, "Toggle All Bots Vote");
+
+                    if (GUILayout.Button("Toggle Impostor")
+                    {
+                        GUILayout.Toggle(Role.Impostor)
+                    }
+
+                    if (GUILayout.Button("Toggle Crewmate")
+                    {
+                        GUILayout.Toggle(Role.Crewmate)
+                    }
 
                     if (GUILayout.Button("Next Player"))
                     {
@@ -64,8 +69,7 @@ sing Reactor.Utilities.ImGui;
 
                     if (GUILayout.Button("End Game"))
                     {
-                        PlayerLayer.NobodyWins = true;
-                        EndGame();
+                        RpcEndGame;
                     }
 
                     if (GUILayout.Button("Fix All Sabotages"))
@@ -117,12 +121,15 @@ sing Reactor.Utilities.ImGui;
 
                     if (GUILayout.Button("Revive All"))
                         CustomPlayer.AllPlayers.ForEach(x => x.Revive());
+                    }
 
-                    if (GUILayout.Button("Log Dump"))
+                    if (GUILayout.Button("Flash"))
                     {
-                        PlayerLayer.LocalLayers.ForEach(x => LogSomething(x.Name));
-                        LogSomething("Is Dead - " + CustomPlayer.LocalCustom.IsDead);
-                        LogSomething("Location - " + CustomPlayer.LocalCustom.Position);
+                        var r = (byte)URandom.RandomRangeInt(0, 256);
+                        var g = (byte)URandom.RandomRangeInt(0, 256);
+                        var b = (byte)URandom.RandomRangeInt(0, 256);
+                        var flashColor = new Color32(r, g, b, 255);
+                        Flash(flashColor, "Flash!");
                     }
                 }
 
@@ -158,7 +165,6 @@ sing Reactor.Utilities.ImGui;
                 if (!TestWindow.Enabled)
                 {
                     MCIUtils.RemoveAllPlayers();
-                    TownOfUsReworked.MCIActive = false;
                 }
             }
 
