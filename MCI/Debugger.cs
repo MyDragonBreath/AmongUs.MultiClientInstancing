@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using Reactor.Utilities.ImGui;
 using Il2CppInterop.Runtime.Attributes;
 using System;
@@ -18,10 +19,10 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.LocalPlayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended)
+                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehaviour>.Instance && !PlayerControl.LocalPlayer.Data.IsDead && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
                     PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
 
-                if (DestroyableSingleton<LobbyBehavior>.Instance)
+                if (DestroyableSingleton<LobbyBehaviour>.Instance)
                 {
                     GUILayout.Label("You are sus.");
                 
@@ -29,19 +30,19 @@ namespace MCI
                     {
                         if (PlayerControl.AllPlayerControls.Count < 127)
                         {
-                            InstanceControl.CleanUpLoad();
-                            InstanceControl.CreatePlayerInstance();
+                            Utils.CleanUpLoad();
+                            Utils.CreatePlayerInstance();
                         }
                     }
 
                     if (GUILayout.Button("Remove Last Bot"))
                     {
-                        InstanceControl.RemovePlayer((byte)MCIUtils.Clients.Count);
+                        Utils.RemovePlayer((byte)InstanceControl.clients.Count);
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
                     {
-                        InstanceControl.RemoveAllPlayers();
+                        Utils.RemoveAllPlayers();
                     }
                 }
                 else if (GameManager.Instance.GameHasStarted)
@@ -49,25 +50,15 @@ namespace MCI
 
                     if (GUILayout.Button("Next Player"))
                     {
-                        controllingFigure++;
-                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo((byte)controllingFigure);
+                        ControllingFigure++;
+                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo(ControllingFigure);
                     }
                     else if (GUILayout.Button("Previous Player"))
                     {
-                        controllingFigure--;
-                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo((byte)controllingFigure);
-                    }
-
-                    if (GUILayout.Button("Toggle Impostor"))
-                    {
-                        GUILayout.Toggle(AmongUs.GameOptions.RoleTypes.Impostor);
-                    }
-
-                    if (GUILayout.Button("Toggle Crewmate"))
-                    {
-                        GUILayout.Toggle(AmongUs.GameOptions.RoleTypes.Crewmate);
+                        ControllingFigure--;
+                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo(ControllingFigure);
                     }
 
                     if (GUILayout.Button("End Game"))
@@ -92,10 +83,19 @@ namespace MCI
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
-                        PlayerControl.LocalPlayer.myTasks.ForEach(x => PlayerControl.LocalPlayer.RpcCompleteTask(x.Id));
+                        foreach (var task in PlayerControl.LocalPlayer.myTasks)
+                        {
+                            PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
+                        }
 
                     if (GUILayout.Button("Complete Everyone's Tasks"))
-                        PlayerControl.AllPlayerControls.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                        {
+                            foreach (var task in player.myTasks)
+                            {
+                                player.RpcCompleteTask(task.Id);
+                            }
+                        }
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
@@ -113,7 +113,7 @@ namespace MCI
                         MeetingHud.Instance.RpcClose();
 
                     if (GUILayout.Button("Kill Self"))
-                        player.RpcMurderPlayer(player);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
 
                     if (GUILayout.Button("Kill All"))
                         foreach (var player in PlayerControl.AllPlayerControls)
@@ -125,11 +125,14 @@ namespace MCI
                         PlayerControl.LocalPlayer.Revive();
 
                     if (GUILayout.Button("Revive All"))
-                        PlayerControl.AllPlayersControls.ForEach(x => x.Revive());
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                        {
+                            player.Revive();
+                        }
 
                 if (PlayerControl.LocalPlayer)
                 {
-                    var position = PlayerControl.LocalPlayer.Position;
+                    var position = PlayerControl.LocalPlayer.gameObject.transform.position;
                     GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
 
                     var mouse = Input.mousePosition;
