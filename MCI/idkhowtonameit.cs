@@ -16,7 +16,7 @@ namespace MCI
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
                 if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.LocalPlayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended);
-                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
+                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
 
                 if (DestroyableSingleton<LobbyBehavior>.Instance)
                 {
@@ -61,12 +61,12 @@ namespace MCI
 
                     if (GUILayout.Button("Toggle Impostor"))
                     {
-                        GUILayout.Toggle(Role.Impostor);
+                        GUILayout.Toggle(AmongUs.GameOptions.RoleTypes.Impostor);
                     }
 
                     if (GUILayout.Button("Toggle Crewmate"))
                     {
-                        GUILayout.Toggle(Role.Crewmate);
+                        GUILayout.Toggle(AmongUs.GameOptions.RoleTypes.Crewmate);
                     }
 
                     if (GUILayout.Button("End Game"))
@@ -109,7 +109,7 @@ namespace MCI
                     }
 
                     if (GUILayout.Button("End Meeting") && !MeetingHud.Instance)
-                        MeetingHud.Instance.Rpcclose();
+                        MeetingHud.Instance.RpcClose();
 
                     if (GUILayout.Button("Kill Self"))
                         player.RpcMurderPlayer(player);
