@@ -34,8 +34,6 @@ namespace MCI
                     if (GUILayout.Button("Remove Last Bot"))
                     {
                         InstanceControl.RemovePlayer((byte)MCIUtils.Clients.Count);
-
-                        if (InstanceControl.Clients.Count == 0)
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
