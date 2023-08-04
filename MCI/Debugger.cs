@@ -1,5 +1,5 @@
 using Reactor.Utilities.ImGui;
-using Reactor.Utilities.Attributes;
+using Il2CppInterop.Runtime.Attributes;
 using System;
 using UnityEngine;
 
