@@ -47,10 +47,12 @@ namespace MCI
                     if (GUILayout.Button("Toggle Impostor")
                     {
                         GUILayout.Toggle(Role.Impostor)
+                    }
 
                     if (GUILayout.Button("Toggle Crewmate")
                     {
                         GUILayout.Toggle(Role.Crewmate)
+                    }
 
                     if (GUILayout.Button("Next Player"))
                     {
@@ -137,10 +139,10 @@ namespace MCI
                     var mouse = Input.mousePosition;
                     GUILayout.Label($"Mouse Position\nx: {mouse.x:00.00} y: {mouse.y:00.00} z: {mouse.z:00.00}");
                 }
-            })
+            }
             {
                 Enabled = false,
-            };
+            }
         }
 
         public void Update()
