@@ -4,7 +4,7 @@ We added a debugger to MCI. This Debugger is just an adaptation of the Reworked 
 
 Note: I am not a creator of MCI or something else. I just maid an "addon" for this mod. Please check the official repository at https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/.
 
-##Functions
+## Functions
 
 |Everywhere|In lobby|In game|
 |----------|----------|----------|
@@ -24,7 +24,7 @@ Note: I am not a creator of MCI or something else. I just maid an "addon" for th
 |||-Revive yourself|
 |||-Revive everyone|
 
-##Installation
+## Installation
 
 To open the debugger in the lobby, press F2. soon...
 
