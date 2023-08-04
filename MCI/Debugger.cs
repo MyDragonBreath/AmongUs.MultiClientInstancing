@@ -141,7 +141,7 @@ namespace MCI
             }});
         }
 
-        void Update()
+        public void Update()
         {
             System.Console.WriteLine("a");
 
