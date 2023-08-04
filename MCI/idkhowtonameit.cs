@@ -15,8 +15,8 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (PlayerControl.localplayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.localplayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended);
-                    PlayerControl.localplayer.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
+                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.LocalPlayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended);
+                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(CustomPlayer.Local.Collider.enabled, "Enable Player Collider");
 
                 if (DestroyableSingleton<LobbyBehavior>.Instance)
                 {
@@ -91,10 +91,10 @@ namespace MCI
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
-                        PlayerControl.localplayer.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
+                        PlayerControl.LocalPlayer.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
 
                     if (GUILayout.Button("Complete Everyone's Tasks"))
-                        PlayerControl.AllPlayersControls.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
+                        PlayerControl.AllPlayerControls.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
@@ -104,8 +104,8 @@ namespace MCI
 
                     if (GUILayout.Button("Start Meeting") && !MeetingHud.Instance)
                     {
-                        PlayerControl.localplayer.RemainingEmergencies++;
-                        PlayerControl.localplayer.CmdReportDeadBody(null);
+                        PlayerControl.LocalPlayer.RemainingEmergencies++;
+                        PlayerControl.LocalPlayer.CmdReportDeadBody(null);
                     }
 
                     if (GUILayout.Button("End Meeting") && !MeetingHud.Instance)
@@ -121,12 +121,12 @@ namespace MCI
                         }
 
                     if (GUILayout.Button("Revive Self"))
-                        PlayerControl.localplayer.Revive();
+                        PlayerControl.LocalPlayer.Revive();
 
                     if (GUILayout.Button("Revive All"))
                         PlayerControl.AllPlayersControls.ForEach(x => x.Revive());
 
-                if (PlayerControl.localplayer)
+                if (PlayerControl.LocalPlayer)
                 {
                     var position = CustomPlayer.LocalCustom.Position;
                     GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
@@ -139,7 +139,7 @@ namespace MCI
 
         public void Update()
         {
-            if (NoPlayers || !IsLocalGame)
+            if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null)) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
             {
                 if (TestWindow.Enabled)
                     TestWindow.Enabled = false;
