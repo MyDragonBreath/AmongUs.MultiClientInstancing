@@ -47,14 +47,14 @@ namespace MCI
                     if (GUILayout.Button("Next Player"))
                     {
                     controllingFigure++;
-                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo((byte)controllingFigure);
+                    controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                    InstanceControl.SwitchTo((byte)controllingFigure);
                     }
                     else if (GUILayout.Button("Previous Player"))
                     {
                     controllingFigure--;
-                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo((byte)controllingFigure);
+                    controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                    InstanceControl.SwitchTo((byte)controllingFigure);
                     }
 
                     if (GUILayout.Button("Toggle Impostor"))
