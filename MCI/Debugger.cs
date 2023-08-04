@@ -143,8 +143,8 @@ namespace MCI
 
         void Update()
         {
-            (System.Console.WriteLine("a");
-        }
+            System.Console.WriteLine("a");
+
             if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
             {
                 if (TestWindow.Enabled)
