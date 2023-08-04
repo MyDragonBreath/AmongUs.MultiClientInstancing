@@ -24,10 +24,10 @@ namespace MCI
                 
                     if (GUILayout.Button("Spawn Bot"))
                     {
-                        if (CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize)
+                        if (PlayerControl.AllPlayerControls.Count < 127)
                         {
-                            MCIUtils.CleanUpLoad();
-                            MCIUtils.CreatePlayerInstance();
+                            InstanceControl.CleanUpLoad();
+                            InstanceControl.CreatePlayerInstance();
                         }
                     }
 
@@ -48,13 +48,15 @@ namespace MCI
 
                     if (GUILayout.Button("Next Player"))
                     {
-                        ControllingFigure = CycleByte(CustomPlayer.AllPlayers.Count - 1, 0, ControllingFigure, true);
-                        MCIUtils.SwitchTo(ControllingFigure);
+                    controllingFigure++;
+                            controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                            InstanceControl.SwitchTo((byte)controllingFigure);
                     }
                     else if (GUILayout.Button("Previous Player"))
                     {
-                        ControllingFigure = CycleByte(CustomPlayer.AllPlayers.Count - 1, 0, ControllingFigure, false);
-                        MCIUtils.SwitchTo(ControllingFigure);
+                    controllingFigure--;
+                            controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                            InstanceControl.SwitchTo((byte)controllingFigure);
                     }
 
                     if (GUILayout.Button("Toggle Impostor"))
@@ -97,8 +99,8 @@ namespace MCI
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
-                        HUD.StartCoroutine(HUD.CoFadeFullScreen(UColor.clear, UColor.black));
-                        HUD.StartCoroutine(HUD.CoShowIntro());
+                        HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(Color.clear, Color.black));
+                        HudManager.Instance.StartCoroutine(HudManager.Instance.CoShowIntro());
                     }
 
                     if (GUILayout.Button("Start Meeting") && !Meeting)
@@ -114,7 +116,10 @@ namespace MCI
                         RpcMurderPlayer(CustomPlayer.Local, CustomPlayer.Local);
 
                     if (GUILayout.Button("Kill All"))
-                        CustomPlayer.AllPlayers.ForEach(x => RpcMurderPlayer(x, x));
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                        {
+                          player.RpcMurderPlayer(player);
+                        }
 
                     if (GUILayout.Button("Revive Self"))
                         CustomPlayer.Local.Revive();
@@ -140,7 +145,7 @@ namespace MCI
                 if (TestWindow.Enabled)
                     TestWindow.Enabled = false;
 
-                return; //MCI does only support localhosted lobbies
+                return; //MCI does only support localhosted lobbies.
             }
 
             if (Input.GetKeyDown(KeyCode.F1))
@@ -151,7 +156,6 @@ namespace MCI
                 if (!TestWindow.Enabled)
                 {
                     MCIUtils.RemoveAllPlayers();
-                    TownOfUsReworked.MCIActive = false;
                 }
             }
 
