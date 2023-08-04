@@ -32,6 +32,8 @@ namespace MCI
             Harmony.PatchAll();
             UpdateChecker.CheckForUpdate();
 
+            ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehavior>();
+
             SubmergedCompatibility.Initialize();
 
             SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
