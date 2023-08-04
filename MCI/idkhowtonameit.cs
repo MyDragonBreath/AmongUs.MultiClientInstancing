@@ -49,14 +49,14 @@ namespace MCI
                     if (GUILayout.Button("Next Player"))
                     {
                     controllingFigure++;
-                            controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                            InstanceControl.SwitchTo((byte)controllingFigure);
+                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo((byte)controllingFigure);
                     }
                     else if (GUILayout.Button("Previous Player"))
                     {
                     controllingFigure--;
-                            controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                            InstanceControl.SwitchTo((byte)controllingFigure);
+                        controllingFigure = Mathf.Clamp(controllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo((byte)controllingFigure);
                     }
 
                     if (GUILayout.Button("Toggle Impostor"))
@@ -128,7 +128,7 @@ namespace MCI
 
                 if (PlayerControl.LocalPlayer)
                 {
-                    var position = CustomPlayer.LocalCustom.Position;
+                    var position = PlayerControl.LocalPlayer.Position;
                     GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
 
                     var mouse = Input.mousePosition;
