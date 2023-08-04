@@ -92,7 +92,7 @@ namespace MCI
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
-                        PlayerControl.LocalPlayer.myTasks.ForEach(x => CustomPlayer.Local.RpcCompleteTask(x.Id));
+                        PlayerControl.LocalPlayer.myTasks.ForEach(x => PlayerControl.LocalPlayer.RpcCompleteTask(x.Id));
 
                     if (GUILayout.Button("Complete Everyone's Tasks"))
                         PlayerControl.AllPlayerControls.ForEach(x => x.myTasks.ForEach(y => x.RpcCompleteTask(y.Id)));
