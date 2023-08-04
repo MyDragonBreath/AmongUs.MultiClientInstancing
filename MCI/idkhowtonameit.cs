@@ -2,7 +2,7 @@ using Reactor.Utilities.ImGui;
 
 namespace Debugger
 {
-    //le killer is gonna kill you fr
+    //Based off of Reactor.Debugger but merged with MCI and added some functions of my own for testing
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
@@ -11,7 +11,7 @@ namespace Debugger
 
         public DebuggerBehaviour(IntPtr ptr) : base(ptr)
         {
-            TestWindow = new(new(20, 20, 0, 0), "Better Mci", () =>
+            TestWindow = new(new(20, 20, 0, 0), "BetterMCI", () =>
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
@@ -21,13 +21,14 @@ namespace Debugger
                 if (IsLobby)
                 {
                     GUILayout.Label("You are sus.")
-
+                
                     if (GUILayout.Button("Spawn Bot"))
                     {
-                        if ((CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize)
+                        if ((CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize && TownOfUsReworked.LobbyCapped) || !TownOfUsReworked.LobbyCapped)
                         {
                             MCIUtils.CleanUpLoad();
                             MCIUtils.CreatePlayerInstance();
+                            TownOfUsReworked.MCIActive = true;
                         }
                     }
 
@@ -36,25 +37,17 @@ namespace Debugger
                         MCIUtils.RemovePlayer((byte)MCIUtils.Clients.Count);
 
                         if (MCIUtils.Clients.Count == 0)
+                            TownOfUsReworked.MCIActive = false;
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
                     {
                         MCIUtils.RemoveAllPlayers();
+                        TownOfUsReworked.MCIActive = false;
                     }
                 }
                 else if (IsGame)
                 {
-
-                    if (GUILayout.Button("Toggle Impostor"))
-                    {
-                        GUILayout.Toggle(Role.Impostor);
-                    }
-
-                    if (GUILayout.Button("Toggle Crewmate"))
-                    {
-                        GUILayout.Toggle(Role.Crewmate);
-                    }
 
                     if (GUILayout.Button("Next Player"))
                     {
@@ -65,6 +58,16 @@ namespace Debugger
                     {
                         ControllingFigure = CycleByte(CustomPlayer.AllPlayers.Count - 1, 0, ControllingFigure, false);
                         MCIUtils.SwitchTo(ControllingFigure);
+                    }
+
+                    if (GUILayout.Button("Toggle Impostor"))
+                    {
+                        GUILayout.Toggle(Role.Impostor);
+                    }
+
+                    if (GUILayout.Button("Toggle Crewmate"))
+                    {
+                        GUILayout.Toggle(Role.Crewmate);
                     }
 
                     if (GUILayout.Button("End Game"))
@@ -97,7 +100,7 @@ namespace Debugger
 
                     if (GUILayout.Button("Redo Intro Sequence"))
                     {
-                        HUD.StartCoroutine(HUD.CoFadeFullScreen(Color.clear, Color.black));
+                        HUD.StartCoroutine(HUD.CoFadeFullScreen(UColor.clear, UColor.black));
                         HUD.StartCoroutine(HUD.CoShowIntro());
                     }
 
@@ -121,17 +124,13 @@ namespace Debugger
 
                     if (GUILayout.Button("Revive All"))
                         CustomPlayer.AllPlayers.ForEach(x => x.Revive());
-                    }
 
-                    if (GUILayout.Button("Flash"))
+                    if (GUILayout.Button("Log Dump"))
                     {
-                        var r = (byte)URandom.RandomRangeInt(0, 256);
-                        var g = (byte)URandom.RandomRangeInt(0, 256);
-                        var b = (byte)URandom.RandomRangeInt(0, 256);
-                        var flashColor = new Color32(r, g, b, 255);
-                        Flash(flashColor, "Flash!");
+                        PlayerLayer.LocalLayers.ForEach(x => LogSomething(x.Name));
+                        LogSomething("Is Dead - " + CustomPlayer.LocalCustom.IsDead);
+                        LogSomething("Location - " + CustomPlayer.LocalCustom.Position);
                     }
-                }
 
                 if (CustomPlayer.Local)
                 {
@@ -143,6 +142,7 @@ namespace Debugger
                 }
             }
         }
+
         public void Update()
         {
             if (NoPlayers || !IsLocalGame)
@@ -150,7 +150,7 @@ namespace Debugger
                 if (TestWindow.Enabled)
                     TestWindow.Enabled = false;
 
-                return; //Mci does only support localhosted lobbies.
+                return; //You must ensure you are only playing on local
             }
 
             if (Input.GetKeyDown(KeyCode.F1))
@@ -161,6 +161,7 @@ namespace Debugger
                 if (!TestWindow.Enabled)
                 {
                     MCIUtils.RemoveAllPlayers();
+                    TownOfUsReworked.MCIActive = false;
                 }
             }
 
