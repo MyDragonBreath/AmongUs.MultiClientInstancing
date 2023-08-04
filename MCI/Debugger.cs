@@ -1,5 +1,5 @@
 using Reactor.Utilities.ImGui;
-using Reactor.Utilities.Capitilastion;
+using Reactor.Utilities.Attributes;
 using System;
 using UnityEngine;
 
