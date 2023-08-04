@@ -15,7 +15,7 @@ namespace MCI
 
         public DebuggerBehaviour(IntPtr ptr) : base(ptr)
         {
-            TestWindow = new(new(20, 20, 0, 0), "BetterMCI", () =>
+            TestWindow = new(new(20, 20, 0, 0), "MCI Debugger", () =>
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
@@ -143,6 +143,8 @@ namespace MCI
 
         void Update()
         {
+            (System.Console.WriteLine("a");
+        }
             if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
             {
                 if (TestWindow.Enabled)
