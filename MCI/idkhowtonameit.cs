@@ -6,10 +6,8 @@ namespace MCI
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
-        public DragWindow TestWindow { get; }
         private static byte ControllingFigure;
 
-        public DebuggerBehaviour(IntPtr ptr) : base(ptr)
         {
             TestWindow = new(new(20, 20, 0, 0), "Better Mci", () =>
             {
@@ -49,12 +47,10 @@ namespace MCI
                     if (GUILayout.Button("Toggle Impostor")
                     {
                         GUILayout.Toggle(Role.Impostor)
-                    }
 
                     if (GUILayout.Button("Toggle Crewmate")
                     {
                         GUILayout.Toggle(Role.Crewmate)
-                    }
 
                     if (GUILayout.Button("Next Player"))
                     {
