@@ -1,13 +1,15 @@
 using Reactor.Utilities.ImGui;
 
-namespace MCI
+namespace Debugger
 {
     //le killer is gonna kill you fr
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
+        public DragWindow TestWindow { get; }
         private static byte ControllingFigure;
 
+        public DebuggerBehaviour(IntPtr ptr) : base(ptr)
         {
             TestWindow = new(new(20, 20, 0, 0), "Better Mci", () =>
             {
@@ -44,14 +46,14 @@ namespace MCI
                 else if (IsGame)
                 {
 
-                    if (GUILayout.Button("Toggle Impostor")
+                    if (GUILayout.Button("Toggle Impostor"))
                     {
-                        GUILayout.Toggle(Role.Impostor)
+                        GUILayout.Toggle(Role.Impostor);
                     }
 
-                    if (GUILayout.Button("Toggle Crewmate")
+                    if (GUILayout.Button("Toggle Crewmate"))
                     {
-                        GUILayout.Toggle(Role.Crewmate)
+                        GUILayout.Toggle(Role.Crewmate);
                     }
 
                     if (GUILayout.Button("Next Player"))
@@ -140,10 +142,7 @@ namespace MCI
                     GUILayout.Label($"Mouse Position\nx: {mouse.x:00.00} y: {mouse.y:00.00} z: {mouse.z:00.00}");
                 }
             }
-            {
-                Enabled = false,
-            }
-        }
+        };
 
         public void Update()
         {
