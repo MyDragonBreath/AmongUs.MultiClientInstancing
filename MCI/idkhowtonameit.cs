@@ -2,7 +2,7 @@ using Reactor.Utilities.ImGui;
 
 namespace MCI
 {
-    //Based off of Reactor.Debugger but merged with MCI and added some functions of my own for testing
+    //le killer is going to kill you fr
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
@@ -24,11 +24,10 @@ namespace MCI
                 
                     if (GUILayout.Button("Spawn Bot"))
                     {
-                        if ((CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize && TownOfUsReworked.LobbyCapped) || !TownOfUsReworked.LobbyCapped)
+                        if (CustomPlayer.AllPlayers.Count < CustomGameOptions.LobbySize)
                         {
                             MCIUtils.CleanUpLoad();
                             MCIUtils.CreatePlayerInstance();
-                            TownOfUsReworked.MCIActive = true;
                         }
                     }
 
@@ -37,13 +36,11 @@ namespace MCI
                         MCIUtils.RemovePlayer((byte)MCIUtils.Clients.Count);
 
                         if (MCIUtils.Clients.Count == 0)
-                            TownOfUsReworked.MCIActive = false;
                     }
 
                     if (GUILayout.Button("Remove All Bots"))
                     {
                         MCIUtils.RemoveAllPlayers();
-                        TownOfUsReworked.MCIActive = false;
                     }
                 }
                 else if (IsGame)
@@ -125,13 +122,6 @@ namespace MCI
                     if (GUILayout.Button("Revive All"))
                         CustomPlayer.AllPlayers.ForEach(x => x.Revive());
 
-                    if (GUILayout.Button("Log Dump"))
-                    {
-                        PlayerLayer.LocalLayers.ForEach(x => LogSomething(x.Name));
-                        LogSomething("Is Dead - " + CustomPlayer.LocalCustom.IsDead);
-                        LogSomething("Location - " + CustomPlayer.LocalCustom.Position);
-                    }
-
                 if (CustomPlayer.Local)
                 {
                     var position = CustomPlayer.LocalCustom.Position;
@@ -150,7 +140,7 @@ namespace MCI
                 if (TestWindow.Enabled)
                     TestWindow.Enabled = false;
 
-                return; //You must ensure you are only playing on local
+                return; //MCI does only support localhosted lobbies
             }
 
             if (Input.GetKeyDown(KeyCode.F1))
