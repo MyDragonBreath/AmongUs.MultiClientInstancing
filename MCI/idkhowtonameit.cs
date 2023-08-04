@@ -15,7 +15,7 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.LocalPlayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended);
+                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehavior>.Instance && !PlayerControl.LocalPlayer.IsDead && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Ended)
                     PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
 
                 if (DestroyableSingleton<LobbyBehavior>.Instance)
