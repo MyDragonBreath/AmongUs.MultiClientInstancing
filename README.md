@@ -6,10 +6,11 @@ Note: I am not a creator of MCI or something else. I just maid an "addon" for th
 
 ##Functions
 
-Everywhere:
--Display player name and location
--Display mouse location
--Enable player collider
+|Everywhere|In lobby|
+|----------|----------|
+|-Display player name and location|-Spawn a bot|
+|-Display mouse location|-Remove last bot that joined|
+|-Enable player collider|-Remove all bots|
 
 In lobby:
 -Spawn a bot
