@@ -9,6 +9,7 @@ namespace MCI
     [BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
     [BepInProcess("Among Us.exe")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(ReactorPlugin.Id, BepInDependency.DependencyFlags.SoftDependency)]
     public partial class MCIPlugin : BasePlugin
     {
         public const string VersionString = "0.0.6";
