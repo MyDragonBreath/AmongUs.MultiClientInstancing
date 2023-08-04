@@ -32,7 +32,7 @@ namespace MCI
             Harmony.PatchAll();
             UpdateChecker.CheckForUpdate();
 
-            ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehavior>();
+            ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehaviour>();
 
             SubmergedCompatibility.Initialize();
 
