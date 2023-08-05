@@ -34,6 +34,8 @@ namespace MCI
 
             ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehaviour>();
 
+            Component = this.AddComponent<DebuggerBehaviour>();
+
             SubmergedCompatibility.Initialize();
 
             SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
