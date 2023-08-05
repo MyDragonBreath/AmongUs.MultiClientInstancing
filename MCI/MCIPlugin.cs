@@ -5,7 +5,7 @@ using System;
 using UnityEngine.SceneManagement;
 using Reactor;
 using Il2CppInterop.Runtime.Injection;
-using UnityEngine
+using UnityEngine;
 
 namespace MCI
 {
