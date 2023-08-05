@@ -3,6 +3,7 @@ using Reactor.Utilities.ImGui;
 using Il2CppInterop.Runtime.Attributes;
 using System;
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace MCI
 {
@@ -19,12 +20,12 @@ namespace MCI
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
 
-                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehaviour>.Instance && !PlayerControl.LocalPlayer.Data.IsDead && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
-                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
-
                 if (DestroyableSingleton<LobbyBehaviour>.Instance)
                 {
-                    GUILayout.Label("You are sus.");
+                    GUILayout.Label("Created by lekiller, whichtwix");
+
+                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehaviour>.Instance && !PlayerControl.LocalPlayer.Data.IsDead && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
+                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
                 
                     if (GUILayout.Button("Spawn Bot"))
                     {
@@ -59,6 +60,14 @@ namespace MCI
                         ControllingFigure--;
                         ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
                         InstanceControl.SwitchTo(ControllingFigure);
+                    }
+
+                    var data = PlayerControl.LocalPlayer.Data;
+
+                    var newIsImpostor = GUILayout.Toggle(data.Role.IsImpostor, "Toggle Impostor/Crewmate");
+                    if (data.Role.IsImpostor != newIsImpostor)
+                    {
+                        PlayerControl.LocalPlayer.RpcSetRole(newIsImpostor ? RoleTypes.Impostor : RoleTypes.Crewmate);
                     }
 
                     if (GUILayout.Button("End Game"))
