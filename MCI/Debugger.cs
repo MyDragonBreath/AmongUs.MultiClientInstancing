@@ -26,41 +26,14 @@ namespace MCI
 
                 if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehaviour>.Instance && !PlayerControl.LocalPlayer.Data.IsDead && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
                     PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
-                
-                    if (GUILayout.Button("Spawn Bot"))
-                    {
-                        if (PlayerControl.AllPlayerControls.Count < 127)
-                        {
-                            Utils.CleanUpLoad();
-                            Utils.CreatePlayerInstance();
-                        }
-                    }
 
-                    if (GUILayout.Button("Remove Last Bot"))
+                    if (DestroyableSingleton<LobbyBehaviour>.Instance)
                     {
-                        Utils.RemovePlayer((byte)InstanceControl.clients.Count);
-                    }
-
-                    if (GUILayout.Button("Remove All Bots"))
-                    {
-                        Utils.RemoveAllPlayers();
+                        GUILayout.Label("Launch the game to enjoy the Debugger");
                     }
                 }
                 else if (GameManager.Instance.GameHasStarted)
                 {
-
-                    if (GUILayout.Button("Next Player"))
-                    {
-                        ControllingFigure++;
-                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo(ControllingFigure);
-                    }
-                    else if (GUILayout.Button("Previous Player"))
-                    {
-                        ControllingFigure--;
-                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
-                        InstanceControl.SwitchTo(ControllingFigure);
-                    }
 
                     var data = PlayerControl.LocalPlayer.Data;
 
