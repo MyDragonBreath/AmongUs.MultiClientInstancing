@@ -42,7 +42,7 @@ https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-
   <summary> v0.0.6 </summary>
   <ul>
     <li> Updated to latest version </li>
-    <li> Added Modified Reactor Debugger <li>
+    <li> Added Modified Reactor Debugger </li>
     <li> Submerged compatibility </li>
     <li> Client Simplifications </li>
     <li> IKnowWhatI'm Doing Mode (with shift+f6) </li>
