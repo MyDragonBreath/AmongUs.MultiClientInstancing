@@ -35,7 +35,7 @@ namespace MCI
 
             ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehaviour>();
 
-            Component = this.AddComponent<DebuggerBehaviour>();
+            this.AddComponent<DebuggerBehaviour>();
 
             SubmergedCompatibility.Initialize();
 
