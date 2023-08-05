@@ -29,7 +29,7 @@ namespace MCI
 
                     if (DestroyableSingleton<LobbyBehaviour>.Instance)
                     {
-                        GUILayout.Label("Launch the game to enjoy the Debugger");
+                        GUILayout.Label("Start the game to enjoy the Debugger");
                     }
                 }
                 else if (GameManager.Instance.GameHasStarted)
