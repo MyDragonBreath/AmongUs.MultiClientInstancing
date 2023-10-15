@@ -1,8 +1,7 @@
-﻿using Hazel;
+﻿using BepInEx.Unity.IL2CPP;
 using InnerNet;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace MCI
 {
@@ -46,6 +45,10 @@ namespace MCI
             if (SubmergedCompatibility.Loaded)
             {
                 SubmergedCompatibility.ImpartSub(sampleC.Character);
+            }
+            if (IL2CPPChainloader.Instance.Plugins.TryGetValue("me.eisbison.theotherroles", out _))
+            {
+                sampleC.Character.GetComponent<DummyBehaviour>().enabled = true;
             }
 
             return sampleC.Character;
