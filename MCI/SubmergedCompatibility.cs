@@ -19,7 +19,7 @@ namespace MCI
     public class SubmergedCompatibility
     {
         public const string SUBMERGED_GUID = "Submerged";
-        public const ShipStatus.MapType SUBMERGED_MAP_TYPE = (ShipStatus.MapType)5;
+        public const ShipStatus.MapType SUBMERGED_MAP_TYPE = (ShipStatus.MapType)6;
 
         public static SemanticVersioning.Version Version { get; private set; }
         public static bool Loaded { get; private set; }

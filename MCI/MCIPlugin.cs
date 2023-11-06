@@ -11,7 +11,7 @@ namespace MCI
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public partial class MCIPlugin : BasePlugin
     {
-        public const string VersionString = "0.0.6";
+        public const string VersionString = "0.0.7";
         internal static Version vVersion = new(VersionString);
         public Harmony Harmony { get; } = new(Id);
 
@@ -49,6 +49,16 @@ namespace MCI
         public static void Prefix(GameStartManager __instance)
         {
             __instance.countDownTimer = 0;
+        }
+    }
+
+
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    public static class GetBrodowserVersionPatch
+    {
+        public static void Postfix(ref int  __result)
+        {
+           __result += 25;   
         }
     }
 }

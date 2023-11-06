@@ -34,7 +34,7 @@ namespace MCI.Patches
             }
             if (UpdateChecker.needsUpdate) __instance.text.text += " - <color=#ff0000FF>UPDATE AVAILABLE</color>";
             __instance.text.text +=
-                "\n    by MyDragonBreath, whichTwix";
+                "\n    by MyDragonBreath, whichTwix, jeanthefungle";
         }
     }
 }
