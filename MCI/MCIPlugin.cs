@@ -54,7 +54,7 @@ namespace MCI
 
 
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    public static class GetBrodowserVersionPatch
+    public static class GetBrodcastVersionPatch
     {
         public static void Postfix(ref int  __result)
         {
