@@ -4,51 +4,39 @@ using HarmonyLib;
 using System;
 using UnityEngine.SceneManagement;
 
-namespace MCI
+namespace MCI;
+
+[BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
+[BepInProcess("Among Us.exe")]
+[BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+public partial class MCIPlugin : BasePlugin
 {
-    [BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
-    [BepInProcess("Among Us.exe")]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
-    public partial class MCIPlugin : BasePlugin
+    public const string VersionString = "0.0.6";
+    public static Version vVersion = new(VersionString);
+    public Harmony Harmony { get; } = new(Id);
+
+    public static MCIPlugin Singleton { get; private set; } = null;
+
+    public static string RobotName { get; set; } = "Bot";
+
+    public static bool Enabled { get; set; } = true;
+    public static bool IKnowWhatImDoing { get; set; } = false;
+    public static bool Persistence { get; set; } = true;
+
+    public override void Load()
     {
-        public const string VersionString = "0.0.6";
-        internal static Version vVersion = new(VersionString);
-        public Harmony Harmony { get; } = new(Id);
+        if (Singleton != null)
+            return;
 
-        public static MCIPlugin Singleton { get; private set; } = null;
+        Singleton = this;
+        Harmony.PatchAll();
+        UpdateChecker.CheckForUpdate();
+        SubmergedCompatibility.Initialize();
 
-        public static string RobotName { get; set; } = "Bot";
-
-        public static bool Enabled { get; set; } = true;
-        public static bool IKnowWhatImDoing { get; set; } = false;
-        public override void Load()
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
-            if (Singleton != null) return;
-            Singleton = this;
-
-            Harmony.PatchAll();
-            UpdateChecker.CheckForUpdate();
-
-            SubmergedCompatibility.Initialize();
-
-            SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
-            {
-                if (scene.name == "MainMenu")
-                {
-                    ModManager.Instance.ShowModStamp();
-                }
-            }));
-        }
-
-        internal static bool Persistence = true;
-    }
-
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
-    public static class CountdownPatch
-    {
-        public static void Prefix(GameStartManager __instance)
-        {
-            __instance.countDownTimer = 0;
-        }
+            if (scene.name == "MainMenu")
+                ModManager.Instance.ShowModStamp();
+        }));
     }
 }

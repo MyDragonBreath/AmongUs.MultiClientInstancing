@@ -2,68 +2,179 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using BepInEx.Unity.IL2CPP;
+using MCI.Patches;
 
-namespace MCI
+namespace MCI;
+
+public static class InstanceControl
 {
-    public static class InstanceControl
+    internal static Dictionary<int, ClientData> Clients = new();
+    internal static Dictionary<byte, int> PlayerClientIDs = new();
+    internal static Dictionary<byte, Vector2> SavedPositions = new();
+    public static PlayerControl CurrentPlayerInPower { get; private set; }
+
+    public static int AvailableId()
     {
-        internal static Dictionary<int, ClientData> clients = new();
-
-        internal static Dictionary<byte, int> PlayerIdClientId = new();
-
-        public const int MaxID = 100;
-
-        public static int AvailableId()
+        for (var i = 1; i < 128; i++)
         {
-            for (int i = 2; i < MaxID; i++)
-            {
-                if (!clients.ContainsKey(i) && PlayerControl.LocalPlayer.OwnerId != i)
-                    return i;
-            }
-            return -1;
+            if (!Clients.ContainsKey(i) && PlayerControl.LocalPlayer.OwnerId != i)
+                return i;
         }
 
-        public static PlayerControl CurrentPlayerInPower { get; private set; }
+        return -1;
+    }
 
-        public static void SwitchTo(byte playerId)
+    public static void SwitchTo(byte playerId)
+    {
+        SavedPositions[PlayerControl.LocalPlayer.PlayerId] = PlayerControl.LocalPlayer.transform.position;
+        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerControl.LocalPlayer.transform.position);
+        PlayerControl.LocalPlayer.moveable = false;
+
+        var light = PlayerControl.LocalPlayer.lightSource;
+        var savedId = PlayerControl.LocalPlayer.PlayerId;
+
+        //Setup new player
+        var newPlayer = PlayerById(playerId);
+
+        if (newPlayer == null)
+            return;
+
+        PlayerControl.LocalPlayer = newPlayer;
+        PlayerControl.LocalPlayer.lightSource = light;
+        PlayerControl.LocalPlayer.moveable = true;
+
+        AmongUsClient.Instance.ClientId = PlayerControl.LocalPlayer.OwnerId;
+        AmongUsClient.Instance.HostId = PlayerControl.LocalPlayer.OwnerId;
+
+        HudManager.Instance.SetHudActive(true);
+        HudManager.Instance.ShadowQuad.gameObject.SetActive(!newPlayer.Data.IsDead);
+        HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
+
+        //hacky "fix" for twix and det
+
+        HudManager.Instance.KillButton.transform.parent.GetComponentsInChildren<Transform>().ToList().ForEach(x =>
         {
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerControl.LocalPlayer.transform.position);
-            PlayerControl.LocalPlayer.moveable = false;
+            if (x.gameObject.name == "KillButton(Clone)")
+                Object.Destroy(x.gameObject);
+        });
 
-            var light = PlayerControl.LocalPlayer.lightSource;
-
-            var newPlayer = Utils.PlayerById(playerId);
-
-            HudManager.Instance.KillButton.buttonLabelText.gameObject.SetActive(false);
-
-            PlayerControl.LocalPlayer = newPlayer;
-            PlayerControl.LocalPlayer.lightSource = light;
-            PlayerControl.LocalPlayer.moveable = true;
-
-            AmongUsClient.Instance.ClientId = PlayerControl.LocalPlayer.OwnerId;
-            AmongUsClient.Instance.HostId = PlayerControl.LocalPlayer.OwnerId;
-
-            HudManager.Instance.SetHudActive(true);
-
-            //hacky "fix" for twix and det
-
-            HudManager.Instance.KillButton.transform.parent.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
-            HudManager.Instance.KillButton.transform.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillTimer_TMP(Clone)") Object.Destroy(x.gameObject); });
-            HudManager.Instance.transform.GetComponentsInChildren<Transform>().ToList().ForEach((x) => { if (x.gameObject.name == "KillButton(Clone)") Object.Destroy(x.gameObject); });
-
-            light.transform.SetParent(PlayerControl.LocalPlayer.transform);
-            light.transform.localPosition = PlayerControl.LocalPlayer.Collider.offset;
-            Camera.main.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
-            PlayerControl.LocalPlayer.MyPhysics.ResetMoveState(true);
-            KillAnimation.SetMovement(PlayerControl.LocalPlayer, true);
-            PlayerControl.LocalPlayer.MyPhysics.inputHandler.enabled = true;
-            CurrentPlayerInPower = newPlayer;
-        }
-
-        public static void SwitchTo(int clientId)
+        HudManager.Instance.KillButton.transform.GetComponentsInChildren<Transform>().ToList().ForEach(x =>
         {
-            byte? id = PlayerIdClientId.Keys.FirstOrDefault((byte x) => PlayerIdClientId[x] == clientId);
-            if (id != null) SwitchTo((byte)id);
+            if (x.gameObject.name == "KillTimer_TMP(Clone)")
+                Object.Destroy(x.gameObject);
+        });
+
+        HudManager.Instance.transform.GetComponentsInChildren<Transform>().ToList().ForEach(x =>
+        {
+            if (x.gameObject.name == "KillButton(Clone)")
+                Object.Destroy(x.gameObject);
+        });
+
+        light.transform.SetParent(newPlayer.transform);
+        light.transform.localPosition = newPlayer.Collider.offset;
+        Camera.main.GetComponent<FollowerCamera>().SetTarget(newPlayer);
+        newPlayer.MyPhysics.ResetMoveState(true);
+        KillAnimation.SetMovement(newPlayer, true);
+        newPlayer.MyPhysics.inputHandler.enabled = true;
+        CurrentPlayerInPower = newPlayer;
+
+        if (SavedPositions.TryGetValue(playerId, out var pos))
+            newPlayer.NetTransform.RpcSnapTo(pos);
+
+        if (SavedPositions.TryGetValue(savedId, out var pos2))
+            PlayerById(savedId).NetTransform.RpcSnapTo(pos2);
+
+        if (MeetingHud.Instance)
+        {
+            if (newPlayer.Data.IsDead)
+                MeetingHud.Instance.SetForegroundForDead();
+            else
+                MeetingHud.Instance.SetForegroundForAlive(); //Parially works, i still need to get the darkening effect to go
         }
+    }
+
+    public static void CleanUpLoad()
+    {
+        if (GameData.Instance.AllPlayers.Count == 1)
+        {
+            Clients.Clear();
+            PlayerClientIDs.Clear();
+            SavedPositions.Clear();
+        }
+    }
+
+    public static PlayerControl CreatePlayerInstance()
+    {
+        var sampleId = AvailableId();
+        var sampleC = new ClientData(sampleId, $"Bot-{sampleId}", new()
+        {
+            Platform = Platforms.StandaloneWin10,
+            PlatformName = "Bot"
+        }, 1, "", "robotmodeactivate");
+
+        AmongUsClient.Instance.CreatePlayer(sampleC);
+        AmongUsClient.Instance.allClients.Add(sampleC);
+
+        sampleC.Character.SetName(MCIPlugin.IKnowWhatImDoing ? $"Bot {{{sampleC.Character.PlayerId}:{sampleId}}}" : $"Bot {sampleC.Character.PlayerId}");
+        sampleC.Character.SetSkin(HatManager.Instance.allSkins[Random.Range(0, HatManager.Instance.allSkins.Count)].ProdId, 0);
+        sampleC.Character.SetNamePlate(HatManager.Instance.allNamePlates[Random.RandomRangeInt(0, HatManager.Instance.allNamePlates.Count)].ProdId);
+        sampleC.Character.SetPet(HatManager.Instance.allPets[Random.RandomRangeInt(0, HatManager.Instance.allPets.Count)].ProdId);
+        sampleC.Character.SetColor(Random.Range(0, Palette.PlayerColors.Length));
+        sampleC.Character.SetHat("hat_NoHat", 0);
+
+        Clients.Add(sampleId, sampleC);
+        PlayerClientIDs.Add(sampleC.Character.PlayerId, sampleId);
+        sampleC.Character.MyPhysics.ResetAnimState();
+        sampleC.Character.MyPhysics.ResetMoveState();
+
+        if (SubmergedCompatibility.Loaded)
+            SubmergedCompatibility.ImpartSub(sampleC.Character);
+
+        if (IL2CPPChainloader.Instance.Plugins.ContainsKey("me.eisbison.theotherroles"))
+            sampleC.Character.GetComponent<DummyBehaviour>().enabled = true;
+
+        return sampleC.Character;
+    }
+
+    public static void UpdateNames(string name)
+    {
+        foreach (var playerId in PlayerClientIDs.Keys)
+        {
+            if (MCIPlugin.IKnowWhatImDoing)
+                PlayerById(playerId).SetName(name + $" {{{PlayerById(playerId).PlayerId}:{PlayerClientIDs[playerId]}}}");
+            else
+                PlayerById(playerId).SetName(name + $" {playerId}");
+        }
+    }
+
+    public static PlayerControl PlayerById(byte id) => PlayerControl.AllPlayerControls.ToArray().ToList().Find(x => x.PlayerId == id);
+
+    public static void RemovePlayer(byte id)
+    {
+        if (id == 0)
+            return;
+
+        var clientId = Clients.FirstOrDefault(x => x.Value.Character.PlayerId == id).Key;
+        Clients.Remove(clientId, out var outputData);
+        PlayerClientIDs.Remove(id);
+        SavedPositions.Remove(id);
+        AmongUsClient.Instance.RemovePlayer(clientId, DisconnectReasons.Custom);
+        AmongUsClient.Instance.allClients.Remove(outputData);
+    }
+
+    public static void RemoveAllPlayers()
+    {
+        PlayerClientIDs.Keys.ToList().ForEach(RemovePlayer);
+        SwitchTo(0);
+        Keyboard_Joystick.ControllingFigure = 0;
+    }
+
+    public static void SetForegroundForAlive(this MeetingHud __instance)
+    {
+        __instance.amDead = false;
+        __instance.SkipVoteButton.gameObject.SetActive(true);
+        __instance.SkipVoteButton.AmDead = false;
+        __instance.Glass.gameObject.SetActive(false);
     }
 }

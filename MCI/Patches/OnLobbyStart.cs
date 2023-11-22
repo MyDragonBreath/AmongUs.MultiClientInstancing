@@ -1,27 +1,23 @@
 using HarmonyLib;
 
-namespace MCI.Patches
+namespace MCI.Patches;
+
+[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
+public static class OnLobbyStart
 {
-    [HarmonyPatch]
-
-    public sealed class OnLobbyStart
+    public static void Postfix()
     {
-        [HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
-        [HarmonyPostfix]
+        MCIPlugin.Enabled = AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
 
-        public static void Postfix()
+        if (MCIPlugin.Enabled && MCIPlugin.Persistence && InstanceControl.Clients.Count != 0)
         {
-            if (!MCIPlugin.Enabled) return;
-            if (MCIPlugin.Persistence && InstanceControl.clients.Count != 0)
-            {
-                int count = InstanceControl.clients.Count;
-                InstanceControl.clients.Clear();
-                InstanceControl.PlayerIdClientId.Clear();
-                for (int i = 0; i < count; i++)
-                {
-                    Utils.CreatePlayerInstance("Bot");
-                }
-            }
+            var count = InstanceControl.Clients.Count;
+            InstanceControl.Clients.Clear();
+            InstanceControl.PlayerClientIDs.Clear();
+            InstanceControl.SavedPositions.Clear();
+
+            for (var i = 0; i < count; i++)
+                InstanceControl.CreatePlayerInstance();
         }
     }
 }

@@ -10,13 +10,13 @@ Please pr and contribute where you feel is necessary.<br>
 The mod is not designed to be the end all for testing - so expect some things, mostly rpc's, not to work - please read the source to understand how this works.<br>
 Relies on Bepinex
 
-## Controls 
+## Controls
 
 Whilst in lobby press `F5` to add players,<br>
 press `F6` to toggle between keeping or losing bots between games,<br>
 and in game press `F9` to move up or `F10` to move down through the id list.<br>
 You can press `F11` to remove all bots.<br>
-You can press `Shift` + `F6` to switch between IKnowWhatI'm Doing Mode.
+You can press `Shift` + `F6` to switch between IKnowWhatI'mDoing Mode.
 
 (note this is older footage as i've now got a system in place to remove the extra buttons from tou, and names are simplified)
 
@@ -28,11 +28,11 @@ https://user-images.githubusercontent.com/38029594/182777865-2ec28bfb-4815-41f4-
 
 | Among Us Version | Download |
 |----------|-------------|
-| v2023.6.13 | [v0.0.6](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.6)
-| v2023.2.28 | [v0.0.5](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.5)
-| v2022.12.14 | [v0.0.4](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.4)
-| v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2)
-| v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1)
+| v2023.6.13 | [v0.0.6](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.6) |
+| v2023.2.28 | [v0.0.5](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.5) |
+| v2022.12.14 | [v0.0.4](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.4) |
+| v2022.6.21 & v2022.7.12 | [v0.0.2](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.2) |
+| v2022.6.21 & v2022.7.12 | [v0.0.1](https://github.com/MyDragonBreath/AmongUs.MultiClientInstancing/releases/tag/v0.0.1) |
 
 ## Changelog
 

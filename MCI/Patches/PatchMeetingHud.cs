@@ -1,17 +1,16 @@
 ﻿using HarmonyLib;
 
-namespace MCI.Patches
+namespace MCI.Patches;
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Confirm))]
+public static class SameVoteAll
 {
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Confirm))]
-    public sealed class SameVoteAll
+    public static void Postfix(MeetingHud __instance, ref byte suspectStateIdx)
     {
-        public static void Postfix(MeetingHud __instance, ref byte suspectStateIdx)
-        {
-            if (!MCIPlugin.Enabled) return;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-            {
-                __instance.CmdCastVote(player.PlayerId, suspectStateIdx);
-            }
-        }
+        if (!MCIPlugin.Enabled)
+            return;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+            __instance.CmdCastVote(player.PlayerId, suspectStateIdx);
     }
 }
