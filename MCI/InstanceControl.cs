@@ -142,7 +142,7 @@ public static class InstanceControl
         foreach (var playerId in PlayerClientIDs.Keys)
         {
             if (MCIPlugin.IKnowWhatImDoing)
-                PlayerById(playerId).SetName(name + $" {{{PlayerById(playerId).PlayerId}:{PlayerClientIDs[playerId]}}}");
+                PlayerById(playerId).SetName(name + $" {{{playerId}:{PlayerClientIDs[playerId]}}}");
             else
                 PlayerById(playerId).SetName(name + $" {playerId}");
         }
