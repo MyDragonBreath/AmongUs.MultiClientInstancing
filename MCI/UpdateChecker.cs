@@ -5,48 +5,50 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System;
 
-namespace MCI
+namespace MCI;
+
+public static class UpdateChecker
 {
-    static class UpdateChecker
+    public static bool needsUpdate;
+
+    public static async void CheckForUpdate()
     {
-        public static void CheckForUpdate()
+        try
         {
-            try {
-                needsUpdate = TaskUpdate().GetAwaiter().GetResult();
-            }
-            catch (Exception) { }
-        }
+            needsUpdate = await TaskUpdate();
+        } catch {}
+    }
 
-        public static async Task<bool> TaskUpdate()
-        {
-            HttpClient http = new();
-            http.DefaultRequestHeaders.Add("User-Agent", "MCI-Agent");
-            var response = await http.GetAsync(new Uri("https://api.github.com/repos/MyDragonBreath/AmongUs.MultiClientInstancing/releases/latest"), HttpCompletionOption.ResponseContentRead);
+    public static async Task<bool> TaskUpdate()
+    {
+        var http = new HttpClient();
+        http.DefaultRequestHeaders.Add("User-Agent", "MCI-Agent");
+        var response = await http.GetAsync("https://api.github.com/repos/MyDragonBreath/AmongUs.MultiClientInstancing/releases/latest", HttpCompletionOption.ResponseContentRead);
 
-            if (response.StatusCode != HttpStatusCode.OK || response.Content == null) return false;
+        if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
+            return false;
 
-            string json = await response.Content.ReadAsStringAsync();
-            var data = JsonSerializer.Deserialize<GitHubApiObject>(json);
-            string tagname = data.tag_name;
-            if (tagname == null) return false;
-            Version ver = Version.Parse(tagname.Replace("v", ""));
-            int diff = MCIPlugin.vVersion.CompareTo(ver);
-            return diff < 0;
-        }
+        var json = await response.Content.ReadAsStringAsync();
+        var data = JsonSerializer.Deserialize<GitHubApiObject>(json);
+        var tagname = data.tag_name;
 
-        public static bool needsUpdate;
-        class GitHubApiObject
-        {
-            [JsonPropertyName("tag_name")]
-            public string tag_name { get; set; }
-            [JsonPropertyName("assets")]
-            public GitHubApiAsset[] assets { get; set; }
-        }
+        if (tagname == null)
+            return false;
 
-        class GitHubApiAsset
-        {
-            [JsonPropertyName("browser_download_url")]
-            public string browser_download_url { get; set; }
-        }
+        return MCIPlugin.vVersion.CompareTo(Version.Parse(tagname.Replace("v", ""))) < 0;
+    }
+
+    private class GitHubApiObject
+    {
+        [JsonPropertyName("tag_name")]
+        public string tag_name { get; set; }
+        [JsonPropertyName("assets")]
+        public GitHubApiAsset[] assets { get; set; }
+    }
+
+    private class GitHubApiAsset
+    {
+        [JsonPropertyName("browser_download_url")]
+        public string browser_download_url { get; set; }
     }
 }
