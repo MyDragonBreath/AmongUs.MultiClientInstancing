@@ -1,46 +1,82 @@
 using AmongUs.Data;
 using Reactor.Utilities.ImGui;
 using Il2CppInterop.Runtime.Attributes;
-using System;
 using UnityEngine;
-using AmongUs.GameOptions;
+using InnerNet;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace MCI
+namespace MCI.Patches
 {
-    //le killer is going to kill you fr
     public class DebuggerBehaviour : MonoBehaviour
     {
         [HideFromIl2Cpp]
         public DragWindow TestWindow { get; }
         private static byte ControllingFigure;
-
-        public DebuggerBehaviour(IntPtr ptr) : base(ptr)
+        public DebuggerBehaviour(System.IntPtr ptr) : base(ptr)
         {
             TestWindow = new(new(20, 20, 0, 0), "MCI Debugger", () =>
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
-
-                if (DestroyableSingleton<LobbyBehaviour>.Instance)
+                GUILayout.Label("Made by le killer with help from whichTwix"); //based off from Reactor.Debugger but remade by AlchlcDvl and updated to vanilla
+                
+                if (PlayerControl.LocalPlayer)
                 {
-                    GUILayout.Label("Created by lekiller, whichtwix");
+                    var position = PlayerControl.LocalPlayer.gameObject.transform.position;
+                    GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
 
-                if (PlayerControl.LocalPlayer && !DestroyableSingleton<LobbyBehaviour>.Instance && !PlayerControl.LocalPlayer.Data.IsDead && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
-                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
-
-                    if (DestroyableSingleton<LobbyBehaviour>.Instance)
-                    {
-                        GUILayout.Label("Start the game to enjoy the Debugger");
-                    }
+                    var mouse = Input.mousePosition;
+                    GUILayout.Label($"Mouse Position\nx: {mouse.x:00.00} y: {mouse.y:00.00} z: {mouse.z:00.00}");
                 }
-                else if (GameManager.Instance.GameHasStarted)
+
+                if (PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead && MCIPlugin.Enabled)
+                    {
+                    PlayerControl.LocalPlayer.Collider.enabled = GUILayout.Toggle(PlayerControl.LocalPlayer.Collider.enabled, "Enable Player Collider");
+                    }
+
+                if (!MCIPlugin.Enabled)
+                {
+                    GUILayout.Label("Debugger features only work on localhosted lobbies");
+                }
+
+                if (!MCIPlugin.Enabled) return;
+                if (PlayerControl.LocalPlayer && AmongUsClient.Instance?.GameState == InnerNetClient.GameStates.Joined && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
+                    {
+                
+                    if (GUILayout.Button("Spawn Bot"))
+                    {
+                        if (PlayerControl.AllPlayerControls.Count < 15)
+                        {
+                            Utils.CleanUpLoad();
+                            Utils.CreatePlayerInstance(MCIPlugin.RobotName);
+                        }
+                    }
+
+                    if (GUILayout.Button("Remove Last Bot"))
+                    {
+                        Utils.RemovePlayer((byte)InstanceControl.clients.Count);
+                    }
+
+                    if (GUILayout.Button("Remove All Bots"))
+                    {
+                        Utils.RemoveAllPlayers();
+                    }
+
+                    }
+                else if (AmongUsClient.Instance?.GameState == InnerNetClient.GameStates.Started || GameManager.Instance?.GameHasStarted == true ||
+                        AmongUsClient.Instance?.IsGameStarted == true && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Ended)
                 {
 
-                    var data = PlayerControl.LocalPlayer.Data;
-
-                    var newIsImpostor = GUILayout.Toggle(data.Role.IsImpostor, "Toggle Impostor/Crewmate");
-                    if (data.Role.IsImpostor != newIsImpostor)
+                    if (GUILayout.Button("Next Player"))
                     {
-                        PlayerControl.LocalPlayer.RpcSetRole(newIsImpostor ? RoleTypes.Impostor : RoleTypes.Crewmate);
+                        ControllingFigure++;
+                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo(ControllingFigure);
+                    }
+                    else if (GUILayout.Button("Previous Player"))
+                    {
+                        ControllingFigure--;
+                        ControllingFigure = (byte) Mathf.Clamp(ControllingFigure, 0, PlayerControl.AllPlayerControls.Count - 1);
+                        InstanceControl.SwitchTo(ControllingFigure);
                     }
 
                     if (GUILayout.Button("End Game"))
@@ -48,20 +84,32 @@ namespace MCI
                         GameManager.Instance.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
                     }
 
-                    if (GUILayout.Button("Fix All Sabotages"))
+                    if (GUILayout.Button("Turn Impostor"))
                     {
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 16);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 0);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 1);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 0);
+                        PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Impostor;
+                    if (PlayerControl.LocalPlayer.Data.IsDead != PlayerControl.LocalPlayer)
+                    {
+                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Impostor);
+                        DestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
+                        PlayerControl.LocalPlayer.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
+                    }
+                    else
+                    {
+                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
+                    }
+                    }
+
+                    if (GUILayout.Button("Turn Crewmate"))
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Crewmate;
+                    if (PlayerControl.LocalPlayer.Data.IsDead != PlayerControl.LocalPlayer)
+                    {
+                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Crewmate);
+                    }
+                    else
+                    {
+                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.CrewmateGhost);
+                    }
                     }
 
                     if (GUILayout.Button("Complete Tasks"))
@@ -91,16 +139,16 @@ namespace MCI
                         PlayerControl.LocalPlayer.CmdReportDeadBody(null);
                     }
 
-                    if (GUILayout.Button("End Meeting") && !MeetingHud.Instance)
+                    if (GUILayout.Button("End Meeting") && MeetingHud.Instance)
                         MeetingHud.Instance.RpcClose();
 
                     if (GUILayout.Button("Kill Self"))
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer, true);
 
                     if (GUILayout.Button("Kill All"))
                         foreach (var player in PlayerControl.AllPlayerControls)
                         {
-                          player.RpcMurderPlayer(player);
+                          player.RpcMurderPlayer(player, true);
                         }
 
                     if (GUILayout.Button("Revive Self"))
@@ -111,44 +159,19 @@ namespace MCI
                         {
                             player.Revive();
                         }
-
-                if (PlayerControl.LocalPlayer)
-                {
-                    var position = PlayerControl.LocalPlayer.gameObject.transform.position;
-                    GUILayout.Label($"Player Position\nx: {position.x:00.00} y: {position.y:00.00} z: {position.z:00.00}");
-
-                    var mouse = Input.mousePosition;
-                    GUILayout.Label($"Mouse Position\nx: {mouse.x:00.00} y: {mouse.y:00.00} z: {mouse.z:00.00}");
                 }
-            }});
+            });
         }
 
         public void Update()
         {
-            System.Console.WriteLine("a");
-
-            if ((PlayerControl.AllPlayerControls.Count < 1 || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) || AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame)
-            {
-                if (TestWindow.Enabled)
-                    TestWindow.Enabled = false;
-
-                return; //MCI does only support localhosted lobbies.
-            }
-
             if (Input.GetKeyDown(KeyCode.F1))
-            {
-                TestWindow.Enabled = !TestWindow.Enabled;
-
-                if (!TestWindow.Enabled)
-                {
-                    Utils.RemoveAllPlayers();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.F2))
                 TestWindow.Enabled = !TestWindow.Enabled;
         }
 
-        public void OnGUI() => TestWindow.OnGUI();
+        public void OnGUI()
+        {
+        TestWindow.OnGUI();
+        }
     }
 }
