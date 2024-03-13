@@ -1,6 +1,8 @@
-﻿using BepInEx;
+using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
+using MCI.Patches;
 using System;
 using UnityEngine.SceneManagement;
 
@@ -30,6 +32,10 @@ namespace MCI
             UpdateChecker.CheckForUpdate();
 
             SubmergedCompatibility.Initialize();
+            
+            this.AddComponent<DebuggerBehaviour>();
+            
+            ClassInjector.RegisterTypeInIl2Cpp<DebuggerBehaviour>();
 
             SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
             {
@@ -42,7 +48,7 @@ namespace MCI
 
         internal static bool Persistence = true;
     }
-
+    
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class CountdownPatch
     {
