@@ -17,7 +17,7 @@ namespace MCI.Patches
             TestWindow = new(new(20, 20, 0, 0), "MCI Debugger", () =>
             {
                 GUILayout.Label("Name: " + DataManager.Player.Customization.Name);
-                GUILayout.Label("Made by le killer with help from whichTwix"); //based off from Reactor.Debugger but remade by AlchlcDvl and updated to vanilla
+                GUILayout.Label("Made by le killer, AlchlcDvl with help from whichTwix"); //based off from Reactor.Debugger but remade by AlchlcDvl and updated to vanilla
                 
                 if (PlayerControl.LocalPlayer)
                 {
