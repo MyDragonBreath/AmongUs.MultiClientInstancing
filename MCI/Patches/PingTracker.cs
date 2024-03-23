@@ -15,9 +15,9 @@ namespace MCI.Patches
             position.AdjustPosition();
             __instance.text.text +=
                 "\n<color=#ff6700FF>MCI v" + MCIPlugin.VersionString + "</color>";
-            __instance.text.text += MCIPlugin.Enabled ? " <color=#00ff00FF>[Active]</color>" : " <color=#ff0000FF>[InActive]</color>";
+            __instance.text.text += ModState.Enabled ? " <color=#00ff00FF>[Active]</color>" : " <color=#ff0000FF>[InActive]</color>";
 
-            if (MCIPlugin.Enabled)
+            if (ModState.Enabled)
             {
                 if (!MCIPlugin.IKnowWhatImDoing)
                 {

@@ -3,6 +3,7 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
+using MCI.Patches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace MCI
         public static bool ReadyPlayerAmount(dynamic __instance, ref int __result)
         {
             if (!Loaded) return true;
-            if (MCIPlugin.Enabled)
+            if (ModState.Enabled)
             {
                 __result = __instance.GetTotalPlayerAmount();
                 Enum.TryParse(SpawnInState, "Done", true, out object e);
