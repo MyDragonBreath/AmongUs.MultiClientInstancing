@@ -7,7 +7,7 @@ namespace MCI.Patches
     {
         public static void Postfix(MeetingHud __instance, ref byte suspectStateIdx)
         {
-            if (!MCIPlugin.Enabled) return;
+            if (!ModState.Enabled) return;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 __instance.CmdCastVote(player.PlayerId, suspectStateIdx);

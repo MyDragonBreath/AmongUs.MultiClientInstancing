@@ -19,7 +19,6 @@ namespace MCI
 
         public static string RobotName { get; set; } = "Bot";
 
-        public static bool Enabled { get; set; } = true;
         public static bool IKnowWhatImDoing { get; set; } = false;
         public override void Load()
         {
