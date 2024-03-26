@@ -82,10 +82,10 @@ namespace MCI
             AmongUsClient.Instance.allClients.Remove(outputData);
         }
 
-        public static void RemoveAllPlayers()
+        public static void RemoveAllPlayers(bool DoSwitch)
         {
             foreach (byte playerId in InstanceControl.PlayerIdClientId.Keys) RemovePlayer(playerId);
-            InstanceControl.SwitchTo(AmongUsClient.Instance.allClients[0].Character.PlayerId);
+            if (DoSwitch) InstanceControl.SwitchTo(AmongUsClient.Instance.allClients[0].Character.PlayerId);
         }
     }
 }

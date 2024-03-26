@@ -45,7 +45,7 @@ namespace MCI.Patches
 
             if (Input.GetKeyDown(KeyCode.F11))
             {
-                Utils.RemoveAllPlayers();
+                Utils.RemoveAllPlayers(true);
             }
         }
     }
