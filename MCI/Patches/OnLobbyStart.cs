@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Reactor.Utilities;
 
 namespace MCI.Patches;
 
@@ -17,7 +18,7 @@ public static class OnLobbyStart
             InstanceControl.SavedPositions.Clear();
 
             for (var i = 0; i < count; i++)
-                InstanceControl.CreatePlayerInstance();
+                Coroutines.Start(InstanceControl.CreatePlayerInstance());
         }
     }
 }

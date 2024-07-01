@@ -10,8 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.674" />
-        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.10.24" />
+        <PackageReference Include="Reactor" Version="2.2.0" />
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.688" />
+        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2024.6.18" />
         <PackageReference Include="BepInEx.AutoPlugin" Version="1.1.0" />
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" />
         <PackageReference Include="System.Text.Json" Version="6.0.7" />

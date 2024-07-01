@@ -2,13 +2,13 @@
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using System;
-using UnityEngine.SceneManagement;
 
 namespace MCI;
 
 [BepInAutoPlugin("dragonbreath.au.mci", "MCI", VersionString)]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(Reactor.ReactorPlugin.Id)]
 public partial class MCIPlugin : BasePlugin
 {
     public const string VersionString = "0.0.6";
@@ -32,11 +32,5 @@ public partial class MCIPlugin : BasePlugin
         Harmony.PatchAll();
         UpdateChecker.CheckForUpdate();
         SubmergedCompatibility.Initialize();
-
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
-        {
-            if (scene.name == "MainMenu")
-                ModManager.Instance.ShowModStamp();
-        }));
     }
 }

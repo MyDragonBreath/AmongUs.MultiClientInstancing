@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Reactor.Utilities;
 using UnityEngine;
 
 namespace MCI.Patches;
@@ -21,7 +22,7 @@ public static class Keyboard_Joystick
                 return; //press f6 and f5 to bypass limit
 
             InstanceControl.CleanUpLoad();
-            InstanceControl.CreatePlayerInstance();
+            Coroutines.Start(InstanceControl.CreatePlayerInstance());
         }
 
         if (Input.GetKeyDown(KeyCode.F9))
@@ -63,7 +64,7 @@ public static class Keyboard_Joystick
 
         if (ControllingFigure < 0)
             ControllingFigure = InstanceControl.Clients.Count - 1;
-        else if (ControllingFigure >= InstanceControl.Clients.Count)
+        else if (ControllingFigure > InstanceControl.Clients.Count)
             ControllingFigure = 0;
     }
 }
