@@ -10,12 +10,12 @@ jobs:
         dotnet-version: ['6.0']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.7
         with:
           submodules: true
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - uses: actions/upload-artifact@v3.1.2
+      - uses: actions/upload-artifact@v4.3.4
         with:
           name: MCI.dll
           path: MCI/bin/Release/net6.0/MCI.dll
