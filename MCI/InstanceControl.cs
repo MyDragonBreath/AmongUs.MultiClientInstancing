@@ -136,7 +136,10 @@ public static class InstanceControl
         sampleC.Character.MyPhysics.ResetMoveState();
 
         if (SubmergedCompatibility.Loaded)
+        {
             SubmergedCompatibility.ImpartSub(sampleC.Character);
+            sampleC.Character.isDummy = true;
+        }
 
         if (IL2CPPChainloader.Instance.Plugins.ContainsKey("me.eisbison.theotherroles"))
             sampleC.Character.GetComponent<DummyBehaviour>().enabled = true;

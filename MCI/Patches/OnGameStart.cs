@@ -13,6 +13,7 @@ public static class OnGameStart
         foreach (var p in __instance.allClients)
         {
             p.IsReady = true;
+            p.Character.isDummy = false;
             p.Character.gameObject.GetComponent<DummyBehaviour>().enabled = false;
         }
     }
